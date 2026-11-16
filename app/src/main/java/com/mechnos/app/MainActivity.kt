@@ -82,6 +82,8 @@ fun MechOSApp() {
                     3 -> FormulaLibraryPage(fa, fg, muted, surface)
                     4 -> UnitConverterPage(fa, fg, muted, surface)
                     5 -> SettingsPage(fa, dark, fg, muted, surface, {dark=it; preferences.edit().putBoolean("dark",it).apply()}, {english=it; preferences.edit().putBoolean("english",it).apply()})
+                    6 -> QuizPage(fa, fg, muted, surface)
+                    7 -> BookLibraryPage(fa, fg, muted, surface)
                     else -> QuizPage(fa, fg, muted, surface)
                 }
             }
@@ -114,6 +116,7 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 ToolCard(Icons.Default.Functions, if(fa) "بانک فرمول‌ها" else "Formula Library", if(fa) "روابط کلیدی مهندسی" else "Essential engineering equations", surface, fg, muted) { go(3) }
                 ToolCard(Icons.Default.SwapHoriz, if(fa) "تبدیل واحدها" else "Unit Converter", if(fa) "طول، فشار، نیرو، انرژی و دما" else "Length, pressure, force, energy & temperature", surface, fg, muted) { go(4) }
                 ToolCard(Icons.Default.School, if(fa) "تمرین و آزمون" else "Practice & Quiz", if(fa) "مرور سؤال‌ها و سنجش میزان تسلط" else "Review questions and track confidence", surface, fg, muted) { go(6) }
+                ToolCard(Icons.Default.MenuBook, if(fa) "کتابخانه آفلاین" else "Offline Library", if(fa) "کتاب مرجع دانشگاهی بدون نیاز به اینترنت" else "University reference textbook, no internet required", surface, fg, muted) { go(7) }
             }
         }
     }
