@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MechOSApp() {
     val context = LocalContext.current
-    val preferences = remember { context.getSharedPreferences("mechos_preferences", MODE_PRIVATE) }
+    val preferences = remember { context.getSharedPreferences("mechos_preferences", android.content.Context.MODE_PRIVATE) }
     var english by remember { mutableStateOf(preferences.getBoolean("english", false)) }
     var dark by remember { mutableStateOf(preferences.getBoolean("dark", true)) }
     var page by remember { mutableStateOf(0) }
