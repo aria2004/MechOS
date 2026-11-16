@@ -3,6 +3,12 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
+
+val releaseStoreFile = System.getenv("SIGNING_KEYSTORE_PATH")
+val releaseStorePassword = System.getenv("SIGNING_KEYSTORE_PASSWORD")
+val releaseKeyAlias = System.getenv("SIGNING_KEY_ALIAS")
+val releaseKeyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+
 android {
     namespace = "com.mechnos.app"
     compileSdk = 35
@@ -13,6 +19,22 @@ android {
         versionCode = 9
         versionName = "1.8"
     }
+    signingConfigs {
+        create("release") {
+            if (!releaseStoreFile.isNullOrBlank()) {
+                storeFile = file(releaseStoreFile)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -22,6 +44,7 @@ android {
     }
     buildFeatures { compose = true }
 }
+
 dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.12.01"))
     implementation("androidx.activity:activity-compose:1.10.0")
