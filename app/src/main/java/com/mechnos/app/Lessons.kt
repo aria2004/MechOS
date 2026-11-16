@@ -143,7 +143,7 @@ extraFormula("تنش برشی خار","Key shear stress","τ = 2T/(d b L)","بر
 extraFormula("تنش لهیدگی خار","Key bearing stress","σ_b = 4T/(d h L)","h ارتفاع خار است؛ بارگذاری یکنواخت فرض شده است.","h is key height; assumes uniform bearing load."),
 extraFormula("تنش پیچشی با توان و دور","Shaft torque from power","T = 9550 P_kW/n_rpm","T بر حسب N·m؛ P بر حسب kW و n بر حسب rpm.","T in N·m; P in kW and n in rpm."),
 extraFormula("بار بحرانی اویلر","Euler critical column load","P_cr = π²EI/(KL)²","برای ستون بلند الاستیک؛ محدودیت‌های کاربرد بررسی شود.","For long elastic columns; check applicability."),
-extraFormula("تنش معادل فون‌مایزز","Von Mises equivalent stress","σ_vm = √(σ₁²+σ₂²−σ₁σ₂+3τ²)","برای حالت تنش صفحه‌ای با مؤلفه‌های مناسب.","For plane stress with the appropriate components."),
+extraFormula("تنش معادل فون‌مایزز","Von Mises equivalent stress","σ_vm = √(σ_x²+σ_y²−σ_xσ_y+3τ_xy²)","برای حالت تنش صفحه‌ای با مؤلفه‌های مناسب.","For plane stress with the appropriate components."),
 extraFormula("توان و گشتاور با دور","Power-torque-speed relation","P_kW = T n/9550","T بر حسب N·m و n بر حسب rpm.","T in N·m and n in rpm."),
 extraFormula("عمر یاتاقان بر حسب ساعت","Bearing life in hours","L₁₀h = (10⁶/(60n))(C/P)^p","n دور بر دقیقه است.","n is rotational speed in rpm.")
 )
