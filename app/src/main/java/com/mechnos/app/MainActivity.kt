@@ -54,7 +54,8 @@ fun MechOSApp() {
                 NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
             }
         }) { padding ->
-            CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {\n            Column(Modifier.fillMaxSize().background(bg).padding(padding).padding(horizontal=18.dp)) {
+            CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
+            Column(Modifier.fillMaxSize().background(bg).padding(padding).padding(horizontal=18.dp)) {
                 Row(Modifier.fillMaxWidth().padding(top=18.dp,bottom=18.dp), horizontalArrangement=Arrangement.SpaceBetween, verticalAlignment=Alignment.CenterVertically) {
                     Row(verticalAlignment=Alignment.CenterVertically) {
                         Box(Modifier.size(42.dp).background(Blue, RoundedCornerShape(13.dp)), contentAlignment=Alignment.Center) {
@@ -77,7 +78,14 @@ fun MechOSApp() {
                     3 -> FormulaPage(fa, fg, muted, surface)
                     else -> SettingsPage(fa, dark, fg, muted, surface, {dark=it}, {english=it})
                 }
-            }\n            }\n        }\n    }\n}\n\n@Composable\nfun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
+            }
+            }
+        }
+    }
+}
+
+@Composable
+fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
     LazyColumn(verticalArrangement=Arrangement.spacedBy(14.dp)) {
         item {
             Text(if(fa) "سلام، مهندس! 👋" else "Hello, Engineer! 👋", color=fg, fontSize=25.sp, fontWeight=FontWeight.Bold)
