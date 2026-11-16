@@ -2,6 +2,7 @@ package com.mechnos.app
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -106,7 +107,7 @@ fun ScientificCalculatorPage(fa: Boolean, fg: Color, muted: Color, surface: Colo
         listOf("±", "0", ".", "Ans", "=")
     )
 
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(androidx.compose.foundation.rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
                 Text(if (fa) "ماشین‌حساب علمی" else "Scientific Calculator", color = fg, fontSize = 22.sp, fontWeight = FontWeight.Bold)
@@ -133,7 +134,7 @@ fun ScientificCalculatorPage(fa: Boolean, fg: Color, muted: Color, surface: Colo
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             TextButton(onClick = { advanced = !advanced }) { Text(if (advanced) (if (fa) "حالت ساده" else "Basic") else (if (fa) "توابع بیشتر ▾" else "More functions ▾")) }
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.weight(1f).horizontalScroll(androidx.compose.foundation.rememberScrollState()), verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Memory, null, tint = muted, modifier = Modifier.size(16.dp))
                 Text("M: " + formatNumber(memory), color = muted, fontSize = 10.sp)
                 TextButton(onClick = { memory = 0.0 }) { Text("MC", fontSize = 10.sp) }
@@ -161,9 +162,9 @@ fun ScientificCalculatorPage(fa: Boolean, fg: Color, muted: Color, surface: Colo
                 }
             }
         }
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(Modifier.padding(bottom = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             keys.forEach { row ->
-                Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Row(Modifier.fillMaxWidth().height(44.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     row.forEach { key ->
                         val accent = key in listOf("=", "AC", "⌫", "÷", "×", "−", "+")
                         val label = when (key) { "√(" -> "√"; "∛(" -> "∛"; "fact(" -> "n!"; else -> key }
