@@ -56,7 +56,6 @@ fun MechOSApp() {
                 NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas")})
                 NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.SwapHoriz,null)},label={Text(if(fa) "تبدیل واحد" else "Convert")})
                 NavigationBarItem(selected=page==5,onClick={page=5},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
-                NavigationBarItem(selected=page==6,onClick={page=6},icon={Icon(Icons.Default.Quiz,null)},label={Text(if(fa) "آزمون" else "Practice")})
             }
         }) { padding ->
             CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
@@ -114,6 +113,7 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 ToolCard(Icons.Default.Architecture, if(fa) "استاتیک و مقاومت مصالح" else "Statics & Strength", if(fa) "نیرو، تنش و کرنش" else "Forces, stress & strain", surface, fg, muted) { go(2) }
                 ToolCard(Icons.Default.Functions, if(fa) "بانک فرمول‌ها" else "Formula Library", if(fa) "روابط کلیدی مهندسی" else "Essential engineering equations", surface, fg, muted) { go(3) }
                 ToolCard(Icons.Default.SwapHoriz, if(fa) "تبدیل واحدها" else "Unit Converter", if(fa) "طول، فشار، نیرو، انرژی و دما" else "Length, pressure, force, energy & temperature", surface, fg, muted) { go(4) }
+                ToolCard(Icons.Default.School, if(fa) "تمرین و آزمون" else "Practice & Quiz", if(fa) "مرور سؤال‌ها و سنجش میزان تسلط" else "Review questions and track confidence", surface, fg, muted) { go(6) }
             }
         }
     }
