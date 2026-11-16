@@ -42,7 +42,7 @@ fun AboutMechOSPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                 Text(if(fa)"سازنده" else "Created by",color=muted,fontSize=11.sp)
                 Text(if(fa)"امیررضا" else "Amir Reza",color=fg,fontSize=19.sp,fontWeight=FontWeight.Bold)
                 Text(if(fa)"دانشجوی مهندسی مکانیک" else "Mechanical Engineering Student",color=Color(0xFF35B6FF),fontSize=13.sp)
-                Text("MechOS • Version 1.6",color=muted,fontSize=11.sp)
+                Text("MechOS • Version 1.7",color=muted,fontSize=11.sp)
             }
         }
         Text(if(fa)"ارسال بازخورد" else "Send feedback",color=fg,fontSize=18.sp,fontWeight=FontWeight.Bold)
@@ -50,7 +50,7 @@ fun AboutMechOSPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
         OutlinedTextField(value=category,onValueChange={category=it},modifier=Modifier.fillMaxWidth(),singleLine=true,label={Text(if(fa)"موضوع بازخورد" else "Feedback category")})
         OutlinedTextField(value=message,onValueChange={message=it},modifier=Modifier.fillMaxWidth().heightIn(min=120.dp),label={Text(if(fa)"متن بازخورد" else "Your feedback")},minLines=4)
         Button(onClick={
-            val body=(if(fa)"نوع: " else "Category: ")+category+"\n\n"+message+"\n\nMechOS 1.6"
+            val body=(if(fa)"نوع: " else "Category: ")+category+"\n\n"+message+"\n\nMechOS 1.7"
             val intent=Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:"+FEEDBACK_EMAIL)).apply {
                 putExtra(Intent.EXTRA_SUBJECT,if(fa)"بازخورد MechOS" else "MechOS feedback")
                 putExtra(Intent.EXTRA_TEXT,body)
@@ -84,46 +84,48 @@ fun ThermodynamicsReferencePage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
     var tab by remember { mutableIntStateOf(0) }
     Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(10.dp)) {
         Text(if(fa)"مرجع ترمودینامیک" else "Thermodynamics reference",color=fg,fontSize=22.sp,fontWeight=FontWeight.Bold)
-        Text(if(fa)"نمودارهای خواص، جداول آب و بخار و راهنمای انتخاب ناحیه" else "Property diagrams, water/steam tables and phase-region guide",color=muted,fontSize=11.sp)
+        Text(if(fa)"نمودارهای نواحی فازی، گنبد اشباع و راهنمای تحلیل حالت" else "Phase diagrams, saturation domes and state-analysis guide",color=muted,fontSize=11.sp)
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
-            listOf(if(fa)"نمودارها" else "Diagrams",if(fa)"جدول اشباع" else "Saturation table",if(fa)"راهنمای جداول" else "Table guide").forEachIndexed { i,label -> FilterChip(selected=tab==i,onClick={tab=i},label={Text(label)}) }
+            listOf(if(fa)"نمودارهای فازی" else "Phase diagrams",if(fa)"نمودارهای خواص" else "Property plots",if(fa)"راهنما" else "Guide").forEachIndexed { i,label ->
+                FilterChip(selected=tab==i,onClick={tab=i},label={Text(label)})
+            }
         }
         when(tab) {
             0 -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(12.dp)) {
+                listOf(
+                    Triple("P-v",if(fa)"فشار–حجم ویژه؛ گنبد اشباع و خطوط دمای ثابت" else "Pressure–specific volume: saturation dome and isotherms",if(fa)"داخل گنبد: مخلوط مایع–بخار؛ چپ: مایع فشرده؛ راست: بخار فوق‌گرم." else "Inside the dome: liquid–vapor mixture; left: compressed liquid; right: superheated vapor."),
+                    Triple("P-T",if(fa)"فشار–دما؛ مرزهای فازی و نقطه سه‌گانه و بحرانی" else "Pressure–temperature: phase boundaries, triple and critical points",if(fa)"نقطه سه‌گانه محل هم‌زیستی سه فاز و نقطه بحرانی انتهای منحنی تبخیر است." else "The triple point is where three phases coexist; the critical point terminates the vaporization curve."),
+                    Triple("T-v",if(fa)"دما–حجم ویژه؛ خطوط فشار ثابت و ناحیه دوفازی" else "Temperature–specific volume: isobars and two-phase region",if(fa)"در ناحیه دوفازی، دما و فشار مستقل نیستند و در حالت اشباع به هم وابسته‌اند." else "In the two-phase region, temperature and pressure are not independent; they are linked by saturation.")
+                ).forEach { (kind,title,desc) ->
+                    Surface(color=surface,shape=RoundedCornerShape(16.dp)) {
+                        Column(Modifier.fillMaxWidth().padding(12.dp),verticalArrangement=Arrangement.spacedBy(7.dp)) {
+                            Text(title,color=fg,fontWeight=FontWeight.Bold,fontSize=13.sp)
+                            ThermoSchematic(kind)
+                            Text(desc,color=muted,fontSize=11.sp,lineHeight=17.sp)
+                        }
+                    }
+                }
+                Text(if(fa)"این شکل‌ها بازترسیم آموزشی از نمودارهای مرجع ارسالی هستند؛ مقیاس محورها و شکل منحنی‌ها شماتیک است." else "These are educational redrawings of the supplied reference diagrams; axes and curve shapes are schematic, not to scale.",color=muted,fontSize=10.sp)
+            }
+            1 -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                 listOf("P-v","T-v","T-s","P-h").forEach { kind ->
                     Surface(color=surface,shape=RoundedCornerShape(16.dp)) {
                         Column(Modifier.fillMaxWidth().padding(12.dp),verticalArrangement=Arrangement.spacedBy(5.dp)) {
-                            Text(kind+" • "+(if(fa)"گنبد اشباع و ناحیه دوفازی" else "Saturation dome & two-phase region"),color=fg,fontWeight=FontWeight.Bold)
+                            Text(kind+ " • "+(if(fa)"گنبد اشباع" else "Saturation dome"),color=fg,fontWeight=FontWeight.Bold)
                             ThermoSchematic(kind)
-                            Text(if(fa)"نمای شماتیک و غیرمقیاس؛ برای تحلیل عددی از جدول خواص استفاده کن." else "Conceptual, not-to-scale sketch. Use property tables for numerical work.",color=muted,fontSize=10.sp)
+                            Text(if(fa)"نمای مفهومی و غیرمقیاس؛ برای محاسبات عددی از جدول خواص معتبر استفاده کن." else "Conceptual, not-to-scale plot; use validated property data for numerical calculations.",color=muted,fontSize=10.sp)
                         }
                     }
                 }
-            }
-            1 -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-                Text(if(fa)"آب و بخار اشباع — مقادیر منتخب" else "Saturated water/steam — selected values",color=fg,fontWeight=FontWeight.Bold)
-                Text(if(fa)"واحدها: P بر حسب kPa، حجم ویژه بر حسب m³/kg، آنتالپی kJ/kg و آنتروپی kJ/(kg·K). اعداد گرد شده‌اند." else "Units: P in kPa, specific volume in m³/kg, enthalpy kJ/kg and entropy kJ/(kg·K). Values are rounded.",color=muted,fontSize=10.sp)
-                Surface(color=surface,shape=RoundedCornerShape(12.dp)) {
-                    Column(Modifier.horizontalScroll(rememberScrollState()).padding(8.dp),verticalArrangement=Arrangement.spacedBy(7.dp)) {
-                        val headers=listOf("T °C","P kPa","vf","vg","hf","hfg","hg","sf","sg")
-                        Row { headers.forEach { Text(it,color=Color(0xFF35B6FF),fontSize=10.sp,fontWeight=FontWeight.Bold,modifier=Modifier.width(68.dp)) } }
-                        HorizontalDivider(color=muted.copy(alpha=.25f))
-                        waterSat.forEach { r ->
-                            val vals=listOf(r.t,r.p,r.vf,r.vg,r.hf,r.hfg,r.hf+r.hfg,r.sf,r.sf+r.sfg)
-                            Row { vals.forEach { Text(String.format(Locale.US,"%.4g",it),color=fg,fontSize=10.sp,modifier=Modifier.width(68.dp)) } }
-                        }
-                    }
-                }
-                Text(if(fa)"برای جدول اشباع برحسب فشار، همین حالت‌ها را بر اساس ستون فشار مرتب کن. نزدیک نقطه بحرانی، خواص به‌شدت تغییر می‌کنند؛ این جدول منتخب تا ۲۰۰°C است." else "For pressure-indexed lookup, sort by the pressure column. Properties change rapidly near the critical point; this selected table extends to 200°C.",color=muted,fontSize=11.sp)
             }
             else -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(10.dp)) {
-                ThermoGuideCard(if(fa)"۱) مایع فشرده (Compressed liquid)" else "1) Compressed liquid",if(fa)"اگر T کمتر از Tsat در فشار داده‌شده باشد، معمولاً مایع فشرده است. تقریب رایج: v≈vf(T) و u≈uf(T)، اما برای دقت بالا جدول مایع فشرده را بخوان." else "If T is below Tsat at the given pressure, the state is usually compressed liquid. Common approximation: v≈vf(T), u≈uf(T); use compressed-liquid data for higher accuracy.",surface,fg,muted)
-                ThermoGuideCard(if(fa)"۲) مخلوط اشباع (Two-phase mixture)" else "2) Saturated mixture",if(fa)"بین مایع اشباع و بخار اشباع: y = yf + x·yfg برای v، u، h و s. کیفیت x = (y−yf)/yfg و فقط در ناحیه دوفازی معنا دارد." else "Between saturated liquid and vapor: y = yf + x·yfg for v, u, h and s. Quality x=(y−yf)/yfg is meaningful only in the two-phase region.",surface,fg,muted)
-                ThermoGuideCard(if(fa)"۳) بخار فوق‌گرم (Superheated vapor)" else "3) Superheated vapor",if(fa)"اگر T بیشتر از Tsat در فشار داده‌شده باشد، جدول بخار فوق‌گرم را در فشار ثابت پیدا کن و بین دماها درون‌یابی کن. از جدول اشباع استفاده نکن." else "If T exceeds Tsat at the given pressure, use the superheated table at fixed pressure and interpolate between temperatures. Do not use saturation data.",surface,fg,muted)
-                ThermoGuideCard(if(fa)"۴) جدول اشباع برحسب فشار یا دما" else "4) Saturation tables by pressure or temperature",if(fa)"در جدول برحسب دما، T را پیدا و Psat را بخوان؛ در جدول برحسب فشار، P را پیدا و Tsat را بخوان. زیرنویس f مایع اشباع، g بخار اشباع و fg اختلاف دو حالت است." else "In a temperature table, find T and read Psat; in a pressure table, find P and read Tsat. Subscript f is saturated liquid, g saturated vapor and fg their difference.",surface,fg,muted)
-                ThermoGuideCard(if(fa)"۵) گاز ایده‌آل و هوا" else "5) Ideal gas and air tables",if(fa)"برای گاز ایده‌آل: Pv=RT. در تغییر دما، از جدول خواص گاز ایده‌آل برای u(T)، h(T)، Pr و vr استفاده کن؛ در صورت فرض cp ثابت، روابط Δh≈cpΔT و Δu≈cvΔT کاربرد دارند." else "For an ideal gas: Pv=RT. For temperature changes, use ideal-gas tables for u(T), h(T), Pr and vr; with constant specific heats, Δh≈cpΔT and Δu≈cvΔT.",surface,fg,muted)
-                ThermoGuideCard(if(fa)"۶) چرخه‌ها و نمودارها" else "6) Cycles and diagrams",if(fa)"در T-s، گرمای انتقالی داخلی برگشت‌پذیر برابر مساحت زیر مسیر است؛ در P-v، کار مرزی برابر مساحت زیر منحنی است. چرخه را ساعت‌گرد یا پادساعت‌گرد بودن مسیر تشخیص بده." else "On T-s, reversible heat transfer is the area under a process curve; on P-v, boundary work is the area under the curve. Determine cycle direction from the path.",surface,fg,muted)
-                Text(if(fa)"یادآوری: جدول این صفحه آموزشی و منتخب است، نه جایگزین جدول کامل کتاب یا استاندارد. برای طراحی و امتحان، نسخه مرجع درس را کنترل کن." else "Note: this is a selected learning table, not a replacement for complete textbook/standard tables. Verify against your course reference.",color=Color(0xFFFFB86B),fontSize=11.sp)
+                ThermoGuideCard(if(fa)"۱) مایع فشرده" else "1) Compressed liquid",if(fa)"اگر T کمتر از Tsat در فشار داده‌شده باشد، معمولاً مایع فشرده است. تقریب رایج: v≈vf(T) و u≈uf(T)، اما برای دقت بالا از جدول مایع فشرده استفاده کن." else "If T is below Tsat at the given pressure, the state is usually compressed liquid. Common approximation: v≈vf(T), u≈uf(T); use compressed-liquid data for higher accuracy.",surface,fg,muted)
+                ThermoGuideCard(if(fa)"۲) مخلوط اشباع" else "2) Saturated mixture",if(fa)"بین مایع اشباع و بخار اشباع: y = yf + x·yfg برای v، u، h و s. کیفیت x = (y−yf)/yfg و فقط در ناحیه دوفازی معنا دارد." else "Between saturated liquid and vapor: y = yf + x·yfg for v, u, h and s. Quality x=(y−yf)/yfg is meaningful only in the two-phase region.",surface,fg,muted)
+                ThermoGuideCard(if(fa)"۳) بخار فوق‌گرم" else "3) Superheated vapor",if(fa)"اگر T بیشتر از Tsat در فشار داده‌شده باشد، جدول بخار فوق‌گرم را در فشار ثابت پیدا کن و بین دماها درون‌یابی کن." else "If T exceeds Tsat at the given pressure, use the superheated table at fixed pressure and interpolate between temperatures.",surface,fg,muted)
+                ThermoGuideCard(if(fa)"۴) نقطه سه‌گانه و بحرانی" else "4) Triple and critical points",if(fa)"نقطه سه‌گانه محل تعادل جامد، مایع و بخار است. در نقطه بحرانی تمایز مایع و بخار از بین می‌رود و انتهای گنبد اشباع قرار دارد." else "The triple point is the equilibrium of solid, liquid and vapor. At the critical point, liquid and vapor become indistinguishable and the saturation dome terminates.",surface,fg,muted)
+                ThermoGuideCard(if(fa)"۵) گاز ایده‌آل" else "5) Ideal gas",if(fa)"برای گاز ایده‌آل: Pv=RT. در تغییر دما از h(T)، u(T)، Pr و vr استفاده کن؛ با فرض گرمای ویژه ثابت، Δh≈cpΔT و Δu≈cvΔT." else "For an ideal gas: Pv=RT. For temperature changes use h(T), u(T), Pr and vr; with constant specific heats, Δh≈cpΔT and Δu≈cvΔT.",surface,fg,muted)
+                ThermoGuideCard(if(fa)"۶) قانون مساحت در نمودارها" else "6) Area interpretation",if(fa)"در T-s، برای فرایند برگشت‌پذیر q = ∫T ds؛ در P-v، کار مرزی w = ∫P dv. مساحت فقط با مقیاس و مسیر درست معنای کمی دارد." else "On T-s, reversible heat is q = ∫T ds; on P-v, boundary work is w = ∫P dv. Areas are quantitative only when axes and path are correctly scaled.",surface,fg,muted)
+                Text(if(fa)"یادآوری: نمودارها آموزشی‌اند و جایگزین داده‌های عددی جدول‌های کامل بخار یا استانداردهای خواص نیستند." else "Note: these plots are educational and do not replace numerical steam tables or property standards.",color=Color(0xFFFFB86B),fontSize=11.sp)
             }
         }
     }
