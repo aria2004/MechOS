@@ -366,7 +366,7 @@ fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                                 Column(Modifier.weight(1f)) {
                                     Text(if(fa) lesson.fa else lesson.en,color=fg,fontWeight=FontWeight.Bold)
                                     Text(if(fa) lesson.descFa else lesson.descEn,color=muted,fontSize=11.sp)
-                                    Text(if(fa) "${lesson.questions.size} نمونه سؤال • ${lesson.formulas.size} فرمول" else "${lesson.questions.size} questions • ${lesson.formulas.size} formulas",color=Color(0xFF35AEEF),fontSize=10.sp)
+                                    Text(if(fa) "۱۰۰ سؤال تمرینی • ${lesson.formulas.size} فرمول" else "100 practice questions • ${lesson.formulas.size} formulas",color=Color(0xFF35AEEF),fontSize=10.sp)
                                 }
                                 Icon(Icons.Default.ChevronRight,null,tint=muted)
                             }
@@ -417,12 +417,12 @@ fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                     }
                 } else {
                     LazyColumn(verticalArrangement=Arrangement.spacedBy(9.dp),contentPadding=PaddingValues(bottom=18.dp)) {
-                        item { Text(if(fa) "۱۰ سؤال منتخب برای مرور و تمرین" else "10 selected review questions",color=muted,fontSize=11.sp) }
-                        items(lesson.questions.withIndex().toList()) { indexed ->
+                        item { Text(if(fa) "۱۰۰ سؤال سطح‌بندی‌شده با پاسخ تشریحی" else "100 leveled questions with worked solutions",color=muted,fontSize=11.sp) }
+                        items(practiceQuestionBank(lesson).withIndex().toList()) { indexed ->
                             var reveal by remember(lesson.id,indexed.index) { mutableStateOf(false) }
                             Surface(color=surface,shape=RoundedCornerShape(14.dp)) {
                                 Column(Modifier.fillMaxWidth().padding(14.dp),verticalArrangement=Arrangement.spacedBy(8.dp)) {
-                                    Text(if(fa) "سؤال ${indexed.index+1}" else "Question ${indexed.index+1}",color=Color(0xFF35B6FF),fontSize=10.sp,fontWeight=FontWeight.Bold)
+                                    Text((if(fa) "سؤال ${indexed.index+1} • " else "Question ${indexed.index+1} • ") + (when(indexed.value.difficulty){Difficulty.EASY->if(fa)"آسان" else "Easy";Difficulty.MEDIUM->if(fa)"متوسط" else "Medium";Difficulty.HARD->if(fa)"دشوار" else "Hard"}),color=Color(0xFF35B6FF),fontSize=10.sp,fontWeight=FontWeight.Bold)
                                     Text(if(fa) indexed.value.qFa else indexed.value.qEn,color=fg,fontSize=13.sp,fontWeight=FontWeight.Medium)
                                     TextButton(onClick={reveal=!reveal},contentPadding=PaddingValues(0.dp)) { Text(if(reveal) (if(fa) "پنهان‌کردن پاسخ" else "Hide answer") else (if(fa) "نمایش پاسخ تشریحی" else "Show solution")) }
                                     if(reveal) {
