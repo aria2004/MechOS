@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +37,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MechOSApp() {
-    var english by remember { mutableStateOf(false) }
-    var dark by remember { mutableStateOf(true) }
+    val context = LocalContext.current
+    val preferences = remember { context.getSharedPreferences("mechos_preferences", MODE_PRIVATE) }
+    var english by remember { mutableStateOf(preferences.getBoolean("english", false)) }
+    var dark by remember { mutableStateOf(preferences.getBoolean("dark", true)) }
     var page by remember { mutableStateOf(0) }
     val bg = if (dark) Navy else Color(0xFFF3F6FA)
     val surface = if (dark) Color(0xFF122337) else Color.White
@@ -51,7 +54,8 @@ fun MechOSApp() {
                 NavigationBarItem(selected=page==1,onClick={page=1},icon={Icon(Icons.Default.Calculate,null)},label={Text(if(fa) "محاسبات" else "Calculator")})
                 NavigationBarItem(selected=page==2,onClick={page=2},icon={Icon(Icons.Default.School,null)},label={Text(if(fa) "دروس" else "Courses")})
                 NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas")})
-                NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
+                NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.SwapHoriz,null)},label={Text(if(fa) "تبدیل واحد" else "Convert")})
+                NavigationBarItem(selected=page==5,onClick={page=5},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
             }
         }) { padding ->
             CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
@@ -67,7 +71,7 @@ fun MechOSApp() {
                             Text("ENGINEERING TOOLBOX", color=muted, fontSize=9.sp, letterSpacing=1.5.sp)
                         }
                     }
-                    Surface(color=surface, shape=RoundedCornerShape(20.dp), onClick={english=!english}) {
+                    Surface(color=surface, shape=RoundedCornerShape(20.dp), onClick={english=!english; preferences.edit().putBoolean("english",english).apply()}) {
                         Text(if(english) "EN | فارسی" else "فارسی | EN", color=fg, modifier=Modifier.padding(horizontal=13.dp,vertical=9.dp), fontWeight=FontWeight.Bold, fontSize=12.sp)
                     }
                 }
@@ -76,7 +80,8 @@ fun MechOSApp() {
                     1 -> CalculatorPage(fa, fg, muted, surface)
                     2 -> LessonsPage(fa, fg, muted, surface)
                     3 -> FormulaPage(fa, fg, muted, surface)
-                    else -> SettingsPage(fa, dark, fg, muted, surface, {dark=it}, {english=it})
+                    4 -> UnitConverterPage(fa, fg, muted, surface)
+                    else -> SettingsPage(fa, dark, fg, muted, surface, {dark=it; preferences.edit().putBoolean("dark",it).apply()}, {english=it; preferences.edit().putBoolean("english",it).apply()})
                 }
             }
             }
@@ -106,6 +111,7 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 ToolCard(Icons.Default.Thermostat, if(fa) "ترمودینامیک" else "Thermodynamics", if(fa) "کیفیت، انرژی و خواص" else "Quality, energy & properties", surface, fg, muted) { go(2) }
                 ToolCard(Icons.Default.Architecture, if(fa) "استاتیک و مقاومت مصالح" else "Statics & Strength", if(fa) "نیرو، تنش و کرنش" else "Forces, stress & strain", surface, fg, muted) { go(2) }
                 ToolCard(Icons.Default.Functions, if(fa) "بانک فرمول‌ها" else "Formula Library", if(fa) "روابط کلیدی مهندسی" else "Essential engineering equations", surface, fg, muted) { go(3) }
+                ToolCard(Icons.Default.SwapHoriz, if(fa) "تبدیل واحدها" else "Unit Converter", if(fa) "طول، فشار، نیرو، انرژی و دما" else "Length, pressure, force, energy & temperature", surface, fg, muted) { go(4) }
             }
         }
     }
