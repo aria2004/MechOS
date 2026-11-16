@@ -13,6 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,11 +49,12 @@ fun MechOSApp() {
             NavigationBar(containerColor=surface) {
                 NavigationBarItem(selected=page==0,onClick={page=0},icon={Icon(Icons.Default.Dashboard,null)},label={Text(if(fa) "خانه" else "Home")})
                 NavigationBarItem(selected=page==1,onClick={page=1},icon={Icon(Icons.Default.Calculate,null)},label={Text(if(fa) "محاسبات" else "Calculator")})
-                NavigationBarItem(selected=page==2,onClick={page=2},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas")})
-                NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
+                NavigationBarItem(selected=page==2,onClick={page=2},icon={Icon(Icons.Default.School,null)},label={Text(if(fa) "دروس" else "Courses")})
+                NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas")})
+                NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
             }
         }) { padding ->
-            Column(Modifier.fillMaxSize().background(bg).padding(padding).padding(horizontal=18.dp)) {
+            CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {\n            Column(Modifier.fillMaxSize().background(bg).padding(padding).padding(horizontal=18.dp)) {
                 Row(Modifier.fillMaxWidth().padding(top=18.dp,bottom=18.dp), horizontalArrangement=Arrangement.SpaceBetween, verticalAlignment=Alignment.CenterVertically) {
                     Row(verticalAlignment=Alignment.CenterVertically) {
                         Box(Modifier.size(42.dp).background(Blue, RoundedCornerShape(13.dp)), contentAlignment=Alignment.Center) {
@@ -70,16 +73,11 @@ fun MechOSApp() {
                 when(page) {
                     0 -> HomePage(fa, fg, muted, surface) { page=it }
                     1 -> CalculatorPage(fa, fg, muted, surface)
-                    2 -> FormulaPage(fa, fg, muted, surface)
+                    2 -> LessonsPage(fa, fg, muted, surface)
+                    3 -> FormulaPage(fa, fg, muted, surface)
                     else -> SettingsPage(fa, dark, fg, muted, surface, {dark=it}, {english=it})
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
+            }\n            }\n        }\n    }\n}\n\n@Composable\nfun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
     LazyColumn(verticalArrangement=Arrangement.spacedBy(14.dp)) {
         item {
             Text(if(fa) "سلام، مهندس! 👋" else "Hello, Engineer! 👋", color=fg, fontSize=25.sp, fontWeight=FontWeight.Bold)
@@ -97,9 +95,9 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
         item { Text(if(fa) "ابزارهای سریع" else "QUICK TOOLS", color=muted, fontSize=11.sp, fontWeight=FontWeight.Bold) }
         item {
             Column(verticalArrangement=Arrangement.spacedBy(10.dp)) {
-                ToolCard(Icons.Default.Thermostat, if(fa) "ترمودینامیک" else "Thermodynamics", if(fa) "کیفیت، انرژی و خواص" else "Quality, energy & properties", surface, fg, muted) { go(1) }
-                ToolCard(Icons.Default.Architecture, if(fa) "استاتیک و مقاومت مصالح" else "Statics & Strength", if(fa) "نیرو، تنش و کرنش" else "Forces, stress & strain", surface, fg, muted) { go(1) }
-                ToolCard(Icons.Default.Functions, if(fa) "بانک فرمول‌ها" else "Formula Library", if(fa) "روابط کلیدی مهندسی" else "Essential engineering equations", surface, fg, muted) { go(2) }
+                ToolCard(Icons.Default.Thermostat, if(fa) "ترمودینامیک" else "Thermodynamics", if(fa) "کیفیت، انرژی و خواص" else "Quality, energy & properties", surface, fg, muted) { go(2) }
+                ToolCard(Icons.Default.Architecture, if(fa) "استاتیک و مقاومت مصالح" else "Statics & Strength", if(fa) "نیرو، تنش و کرنش" else "Forces, stress & strain", surface, fg, muted) { go(2) }
+                ToolCard(Icons.Default.Functions, if(fa) "بانک فرمول‌ها" else "Formula Library", if(fa) "روابط کلیدی مهندسی" else "Essential engineering equations", surface, fg, muted) { go(3) }
             }
         }
     }
