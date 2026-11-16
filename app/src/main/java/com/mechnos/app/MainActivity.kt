@@ -101,7 +101,7 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
                     Text(if(fa) "جعبه‌ابزار مهندسی مکانیک" else "MECHANICAL ENGINEERING TOOLKIT", color=Color(0xFF9BD8FF), fontSize=10.sp, fontWeight=FontWeight.Bold)
                     Text(if(fa) "از فرمول تا پاسخ،\nمرحله‌به‌مرحله." else "From formula to answer,\nstep by step.", color=Color.White, fontSize=22.sp, fontWeight=FontWeight.Bold, modifier=Modifier.padding(top=9.dp))
-                    Text(if(fa) "نسخه ۱.۰ • قابل استفاده آفلاین" else "Version 1.0 • Works offline", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
+                    Text(if(fa) "نسخه ۱.۱ • قابل استفاده آفلاین" else "Version 1.1 • Works offline", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
                 }
             }
         }
@@ -188,6 +188,6 @@ fun SettingsPage(fa:Boolean,dark:Boolean,fg:Color,muted:Color,surface:Color,onDa
                 }
             }
         }
-        Text("MechOS 1.0 • Mechanical Engineering Toolbox",color=muted,fontSize=11.sp)
+        Text("MechOS 1.1 • Mechanical Engineering Toolbox",color=muted,fontSize=11.sp)
     }
 }
