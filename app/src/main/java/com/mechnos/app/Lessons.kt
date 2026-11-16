@@ -1,5 +1,6 @@
 package com.mechnos.app
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.clickable
@@ -349,6 +350,7 @@ fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
     var selected by remember { mutableStateOf<Lesson?>(null) }
     var section by remember { mutableStateOf(0) }
     var courseSearch by remember { mutableStateOf("") }
+    BackHandler(enabled=selected!=null) { selected=null }
     CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
         if(selected==null) {
             Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
