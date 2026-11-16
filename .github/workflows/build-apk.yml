@@ -22,7 +22,7 @@ jobs:
       - name: Download OpenStax offline textbook
         run: |
           mkdir -p app/src/main/assets
-          curl -fL --retry 3 --retry-delay 2 https://assets.openstax.org/oscms-prodcms/media/documents/UniversityPhysicsVol1-WEB.pdf -o app/src/main/assets/UniversityPhysicsVolume1.pdf
+          curl -fL --retry 3 --retry-delay 2 https://openlibrary-repo.ecampusontario.ca/jspui/bitstream/123456789/432/1/university-physics-volume-1-5.2.pdf -o app/src/main/assets/UniversityPhysicsVolume1.pdf
           test $(stat -c%s app/src/main/assets/UniversityPhysicsVolume1.pdf) -gt 50000000
       - name: Build debug APK
         run: gradle assembleDebug
