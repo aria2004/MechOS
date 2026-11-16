@@ -50,7 +50,7 @@ fun AboutMechOSPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
         OutlinedTextField(value=category,onValueChange={category=it},modifier=Modifier.fillMaxWidth(),singleLine=true,label={Text(if(fa)"موضوع بازخورد" else "Feedback category")})
         OutlinedTextField(value=message,onValueChange={message=it},modifier=Modifier.fillMaxWidth().heightIn(min=120.dp),label={Text(if(fa)"متن بازخورد" else "Your feedback")},minLines=4)
         Button(onClick={
-            val body=(if(fa)"نوع: " else "Category: ")+category+"\\n\\n"+message+"\\n\\nMechOS 1.6"
+            val body=(if(fa)"نوع: " else "Category: ")+category+"\n\n"+message+"\\n\\nMechOS 1.6"
             val intent=Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:"+FEEDBACK_EMAIL)).apply {
                 putExtra(Intent.EXTRA_SUBJECT,if(fa)"بازخورد MechOS" else "MechOS feedback")
                 putExtra(Intent.EXTRA_TEXT,body)

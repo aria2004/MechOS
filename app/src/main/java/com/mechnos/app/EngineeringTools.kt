@@ -76,7 +76,7 @@ fun MoreHubPage(fa:Boolean,fg:Color,muted:Color,surface:Color,go:(Int)->Unit) {
         Triple(Icons.Default.Thermostat,if(fa)"نمودارها و جداول ترمودینامیک" else "Thermodynamics charts & tables",18),
         Triple(Icons.Default.Info,if(fa)"درباره MechOS و بازخورد" else "About MechOS & feedback",17)
     )
-    Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         Text(if(fa)"بیشتر" else "More",color=fg,fontSize=23.sp,fontWeight=FontWeight.Bold)
         Text(if(fa)"مطالعه، شخصی‌سازی و منابع" else "Learning, preferences and references",color=muted,fontSize=12.sp)
         entries.forEach { item ->

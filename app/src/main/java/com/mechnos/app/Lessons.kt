@@ -385,7 +385,7 @@ fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                     }
                 }
                 Row(Modifier.fillMaxWidth().background(surface,RoundedCornerShape(13.dp)).padding(4.dp),horizontalArrangement=Arrangement.spacedBy(4.dp)) {
-                    listOf(if(fa) "فرمول‌ها و مفاهیم" else "Formulas & Concepts",if(fa) "نمونه‌سؤال‌ها" else "Practice Questions").forEachIndexed { i,label ->
+                    listOf(if(fa) "درسنامه و فرمول‌ها" else "Lesson notes & formulas",if(fa) "نمونه‌سؤال‌ها" else "Practice Questions").forEachIndexed { i,label ->
                         Surface(modifier=Modifier.weight(1f).clickable{section=i},color=if(section==i) Color(0xFF087FC2) else Color.Transparent,shape=RoundedCornerShape(10.dp)) {
                             Text(label,color=if(section==i) Color.White else muted,textAlign=TextAlign.Center,fontSize=12.sp,fontWeight=FontWeight.SemiBold,modifier=Modifier.padding(vertical=11.dp))
                         }
