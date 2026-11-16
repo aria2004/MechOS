@@ -42,7 +42,7 @@ fun AboutMechOSPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                 Text(if(fa)"سازنده" else "Created by",color=muted,fontSize=11.sp)
                 Text(if(fa)"امیررضا" else "Amir Reza",color=fg,fontSize=19.sp,fontWeight=FontWeight.Bold)
                 Text(if(fa)"دانشجوی مهندسی مکانیک" else "Mechanical Engineering Student",color=Color(0xFF35B6FF),fontSize=13.sp)
-                Text("MechOS • Version 1.7",color=muted,fontSize=11.sp)
+                Text("MechOS • Version 1.8",color=muted,fontSize=11.sp)
             }
         }
         Text(if(fa)"ارسال بازخورد" else "Send feedback",color=fg,fontSize=18.sp,fontWeight=FontWeight.Bold)
@@ -50,7 +50,7 @@ fun AboutMechOSPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
         OutlinedTextField(value=category,onValueChange={category=it},modifier=Modifier.fillMaxWidth(),singleLine=true,label={Text(if(fa)"موضوع بازخورد" else "Feedback category")})
         OutlinedTextField(value=message,onValueChange={message=it},modifier=Modifier.fillMaxWidth().heightIn(min=120.dp),label={Text(if(fa)"متن بازخورد" else "Your feedback")},minLines=4)
         Button(onClick={
-            val body=(if(fa)"نوع: " else "Category: ")+category+"\n\n"+message+"\n\nMechOS 1.7"
+            val body=(if(fa)"نوع: " else "Category: ")+category+"\n\n"+message+"\n\nMechOS 1.8"
             val intent=Intent(Intent.ACTION_SENDTO,Uri.parse("mailto:"+FEEDBACK_EMAIL)).apply {
                 putExtra(Intent.EXTRA_SUBJECT,if(fa)"بازخورد MechOS" else "MechOS feedback")
                 putExtra(Intent.EXTRA_TEXT,body)
@@ -60,31 +60,16 @@ fun AboutMechOSPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
             Icon(Icons.Default.Email,null); Spacer(Modifier.width(8.dp)); Text(if(fa)"ارسال به ایمیل سازنده" else "Email the developer")
         }
         Text(if(fa)"گیرنده: "+FEEDBACK_EMAIL else "Recipient: "+FEEDBACK_EMAIL,color=muted,fontSize=11.sp)
-        Text(if(fa)"هیچ پیامی بدون تأیید تو ارسال نمی‌شود؛ ارسال نهایی را در برنامه ایمیل انجام می‌دهی." else "Nothing is sent without your approval; you complete the send action in your email app.",color=muted,fontSize=10.sp)
+        Text(if(fa)"پیشنهادها و گزارش خطاها برای بهبود نسخه‌های بعدی MechOS استفاده می‌شوند." else "Suggestions and bug reports help improve future MechOS versions.",color=muted,fontSize=10.sp)
     }
 }
-
-private data class SatPoint(val t:Double,val p:Double,val vf:Double,val vg:Double,val hf:Double,val hfg:Double,val sf:Double,val sfg:Double)
-private val waterSat=listOf(
-    SatPoint(0.01,.6117,.001000,206.14,.01,2500.9,0.0000,9.1555),
-    SatPoint(20.0,2.339,.001002,57.79,83.91,2454.1,.2965,8.3660),
-    SatPoint(40.0,7.385,.001008,19.52,167.45,2406.0,.5724,7.6840),
-    SatPoint(60.0,19.946,.001017,7.67,251.13,2358.0,.8313,7.0760),
-    SatPoint(80.0,47.414,.001029,3.407,334.91,2308.0,1.0753,6.5020),
-    SatPoint(100.0,101.325,.001043,1.673,419.04,2256.5,1.3072,5.9490),
-    SatPoint(120.0,198.67,.001060,.8913,503.8,2202.1,1.5301,5.4300),
-    SatPoint(140.0,361.5,.001080,.5078,589.1,2144.7,1.7395,4.9400),
-    SatPoint(160.0,618.2,.001102,.3068,675.5,2083.6,1.9427,4.4800),
-    SatPoint(180.0,1002.8,.001127,.1941,763.0,2015.3,2.1383,4.0300),
-    SatPoint(200.0,1554.9,.001157,.1274,852.4,1940.7,2.3309,3.5900)
-)
 
 @Composable
 fun ThermodynamicsReferencePage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
     var tab by remember { mutableIntStateOf(0) }
     Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(10.dp)) {
         Text(if(fa)"مرجع ترمودینامیک" else "Thermodynamics reference",color=fg,fontSize=22.sp,fontWeight=FontWeight.Bold)
-        Text(if(fa)"نمودارهای نواحی فازی، گنبد اشباع و راهنمای تحلیل حالت" else "Phase diagrams, saturation domes and state-analysis guide",color=muted,fontSize=11.sp)
+        Text(if(fa)"نمودارهای مرجع ارسالی: نواحی فازی، گنبد اشباع و مسیر فرایندها" else "Reference diagrams: phase regions, saturation dome and process paths",color=muted,fontSize=11.sp)
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
             listOf(if(fa)"نمودارهای فازی" else "Phase diagrams",if(fa)"نمودارهای خواص" else "Property plots",if(fa)"راهنما" else "Guide").forEachIndexed { i,label ->
                 FilterChip(selected=tab==i,onClick={tab=i},label={Text(label)})
@@ -93,9 +78,9 @@ fun ThermodynamicsReferencePage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
         when(tab) {
             0 -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                 listOf(
-                    Triple("P-v",if(fa)"فشار–حجم ویژه؛ گنبد اشباع و خطوط دمای ثابت" else "Pressure–specific volume: saturation dome and isotherms",if(fa)"داخل گنبد: مخلوط مایع–بخار؛ چپ: مایع فشرده؛ راست: بخار فوق‌گرم." else "Inside the dome: liquid–vapor mixture; left: compressed liquid; right: superheated vapor."),
-                    Triple("P-T",if(fa)"فشار–دما؛ مرزهای فازی و نقطه سه‌گانه و بحرانی" else "Pressure–temperature: phase boundaries, triple and critical points",if(fa)"نقطه سه‌گانه محل هم‌زیستی سه فاز و نقطه بحرانی انتهای منحنی تبخیر است." else "The triple point is where three phases coexist; the critical point terminates the vaporization curve."),
-                    Triple("T-v",if(fa)"دما–حجم ویژه؛ خطوط فشار ثابت و ناحیه دوفازی" else "Temperature–specific volume: isobars and two-phase region",if(fa)"در ناحیه دوفازی، دما و فشار مستقل نیستند و در حالت اشباع به هم وابسته‌اند." else "In the two-phase region, temperature and pressure are not independent; they are linked by saturation.")
+                    Triple("P-v",if(fa)"نمودار فشار–حجم ویژه و خطوط دمای ثابت" else "Pressure–specific volume and isotherms",if(fa)"زیر گنبد، ناحیه مخلوط اشباع قرار دارد؛ سمت چپ مایع فشرده و سمت راست بخار فوق‌گرم است. رأس گنبد نقطه بحرانی است." else "The saturation mixture lies under the dome; compressed liquid is on the left and superheated vapor on the right. The dome apex is the critical point."),
+                    Triple("P-T",if(fa)"نمودار فشار–دما و مرزهای فازی" else "Pressure–temperature phase-boundary diagram",if(fa)"نقطه سه‌گانه محل هم‌زیستی جامد، مایع و بخار است؛ منحنی تبخیر در نقطه بحرانی پایان می‌یابد." else "The triple point is where solid, liquid and vapor coexist; the vaporization curve ends at the critical point."),
+                    Triple("T-v",if(fa)"نمودار دما–حجم ویژه و مسیرهای فرایندی" else "Temperature–specific volume and process paths",if(fa)"خطوط افقی در ناحیه دوفازی، تغییر حجم در حالت اشباع را نشان می‌دهند؛ مسیر واقعی فرایند را با توجه به ثابت بودن فشار یا دما دنبال کن." else "Horizontal paths through the two-phase region illustrate volume change during saturation; identify whether pressure or temperature is held constant.")
                 ).forEach { (kind,title,desc) ->
                     Surface(color=surface,shape=RoundedCornerShape(16.dp)) {
                         Column(Modifier.fillMaxWidth().padding(12.dp),verticalArrangement=Arrangement.spacedBy(7.dp)) {
@@ -105,7 +90,7 @@ fun ThermodynamicsReferencePage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                         }
                     }
                 }
-                Text(if(fa)"این شکل‌ها بازترسیم آموزشی از نمودارهای مرجع ارسالی هستند؛ مقیاس محورها و شکل منحنی‌ها شماتیک است." else "These are educational redrawings of the supplied reference diagrams; axes and curve shapes are schematic, not to scale.",color=muted,fontSize=10.sp)
+                Text(if(fa)"سه نمودار این بخش بر اساس تصاویر مرجع ارسالی بازترسیم شده‌اند. منحنی‌ها و مقیاس محورها شماتیک‌اند و برای استخراج مقدار عددی استفاده نمی‌شوند." else "The three diagrams in this section are educational redrawings based on your supplied references. Curves and axes are schematic and must not be used to read numerical values.",color=muted,fontSize=10.sp)
             }
             1 -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                 listOf("P-v","T-v","T-s","P-h").forEach { kind ->
