@@ -27,6 +27,155 @@ private data class Lesson(val id:String,val fa:String,val en:String,val descFa:S
 private fun q(f:String,e:String,af:String,ae:String)=LessonQuestion(f,e,af,ae)
 private fun formula(t:String,e:String,n:String,ne:String)=LessonFormula(t,when(t) { "قانون تعادل نیروها"->"Force equilibrium"; "تعادل گشتاورها"->"Moment equilibrium"; "گشتاور نیرو"->"Moment of a force"; "اصطکاک حدی"->"Limiting friction"; "تنش نرمال"->"Normal stress"; "کرنش محوری"->"Axial strain"; "قانون هوک"->"Hooke’s law"; "تنش برشی متوسط"->"Average shear stress"; "خمش تیر"->"Beam bending"; "قانون اول سیستم بسته"->"First law for a closed system"; "گاز ایده‌آل"->"Ideal gas"; "کار مرزی"->"Boundary work"; "آنتالپی"->"Enthalpy"; "کیفیت بخار"->"Vapor quality"; "سرعت متوسط"->"Average velocity"; "شتاب"->"Acceleration"; "حرکت با شتاب ثابت"->"Constant-acceleration motion"; "قانون دوم نیوتن"->"Newton’s second law"; "انرژی جنبشی"->"Kinetic energy"; "فشار"->"Pressure"; "فشار هیدرواستاتیک"->"Hydrostatic pressure"; "معادله پیوستگی"->"Continuity equation"; "برنولی"->"Bernoulli equation"; "نیروی شناوری"->"Buoyant force"; "قانون فوریه"->"Fourier’s law"; "جابه‌جایی نیوتن"->"Newton’s law of cooling"; "قانون استفان-بولتزمن"->"Stefan–Boltzmann law"; "مقاومت رسانش دیواره"->"Wall conduction resistance"; "نسبت سرعت زاویه‌ای"->"Angular speed ratio"; "سرعت نقطه روی جسم صلب"->"Rigid-body point velocity"; "شتاب مماسی"->"Tangential acceleration"; "شتاب نرمال"->"Normal acceleration"; "تنش پیچشی محور"->"Shaft torsional stress"; "توان دورانی"->"Rotational power"; "تنش برشی پیچ"->"Bolt shear stress"; "ضریب اطمینان"->"Factor of safety"; "فرکانس طبیعی جرم-فنر"->"Mass-spring natural frequency"; "فرکانس"->"Frequency"; "نسبت میرایی"->"Damping ratio"; "میرایی بحرانی"->"Critical damping"; "مشتق توان"->"Power rule"; "انتگرال توان"->"Power integral"; "تبدیل لاپلاس"->"Laplace transform"; else->t },e,n,ne)
 
+
+private fun extraFormula(t:String,en:String,eq:String,faNote:String,enNote:String)=LessonFormula(t,en,eq,faNote,enNote)
+private fun extraFormulas(id:String):List<LessonFormula> = when(id) {
+"statics" -> listOf(
+extraFormula("تجزیه نیرو","Force components","Fx = F cosθ ; Fy = F sinθ","زاویه از محور x مثبت اندازه‌گیری می‌شود.","Angle is measured from the positive x-axis."),
+extraFormula("برآیند دوبعدی","2D resultant","R = √(ΣFx² + ΣFy²)","اندازه برآیند از جمع مؤلفه‌ها به دست می‌آید.","Magnitude from summed components."),
+extraFormula("زاویه برآیند","Resultant direction","θ = atan2(ΣFy, ΣFx)","تابع atan2 ربع درست را تعیین می‌کند.","atan2 returns the correct quadrant."),
+extraFormula("گشتاور برداری","Vector moment","M_O = r × F","در سه‌بعد، گشتاور حاصل‌ضرب برداری مکان و نیروست.","In 3D, moment is the cross product of position and force."),
+extraFormula("گشتاور زوج نیرو","Couple moment","M = F d","d فاصله عمود بین دو خط اثر نیروهای برابر و مخالف است.","d is the perpendicular separation of equal and opposite forces."),
+extraFormula("قضیه وارینیون","Varignon’s theorem","M_O(R) = Σ M_O(F_i)","گشتاور برآیند برابر مجموع گشتاور تک‌تک نیروهاست.","Moment of the resultant equals the sum of individual moments."),
+extraFormula("اصطکاک جنبشی","Kinetic friction","F_k = μ_k N","برای لغزش؛ جهت نیرو مخالف حرکت نسبی است.","For sliding; friction opposes relative motion."),
+extraFormula("زاویه اصطکاک","Angle of friction","tanφ = μ_s","φ زاویه اصطکاک در آستانه لغزش است.","φ is the friction angle at impending slip."),
+extraFormula("مرکز سطح مرکب","Composite-area centroid","x̄ = Σ(A_i x_i)/ΣA_i ; ȳ = Σ(A_i y_i)/ΣA_i","برای سوراخ‌ها، مساحت را با علامت منفی وارد کنید.","Use negative area for holes."),
+extraFormula("ممان دوم سطح مستطیل","Rectangle second moment of area","I_x = b h³/12","محور از مرکز سطح و موازی قاعده است.","Centroidal axis parallel to the base."),
+extraFormula("ممان قطبی سطح دایره","Polar area moment of circle","J = π d⁴/32","برای مقطع دایره‌ای توپر حول مرکز.","For a solid circular section about its center."),
+extraFormula("قضیه محورهای موازی سطح","Parallel-axis theorem","I = I_c + A d²","d فاصله دو محور موازی است.","d is the spacing between parallel axes.")
+)
+"strength" -> listOf(
+extraFormula("تغییر طول محوری","Axial deformation","δ = PL/(AE)","برای میله منشوری با رفتار الاستیک خطی.","For a prismatic bar in linear elasticity."),
+extraFormula("تنش حرارتی مقید","Restrained thermal stress","σ_th = E α ΔT","برای انبساط کاملاً مقید و بدون تنش اولیه.","For fully restrained thermal expansion."),
+extraFormula("پیچش محور دایره‌ای","Shaft torsion","τ = Tr/J","تنش برشی در شعاع r؛ بیشینه در سطح خارجی.","Shear stress at radius r; maximum at the outer surface."),
+extraFormula("زاویه پیچش","Angle of twist","θ = TL/(JG)","برای محور منشوری با گشتاور ثابت.","For a prismatic shaft under constant torque."),
+extraFormula("تنش برشی تیر","Beam transverse shear","τ = VQ/(It)","Q ممان اول سطح، I ممان دوم سطح و t ضخامت موضعی است.","Q is first moment of area, I second moment, t local thickness."),
+extraFormula("رابطه بار، برش و لنگر","Load-shear-moment relations","dV/dx = −w ; dM/dx = V","علامت‌ها تابع قرارداد علامت انتخابی‌اند.","Signs depend on the adopted convention."),
+extraFormula("تنش‌های اصلی دوبعدی","Plane-stress principal stresses","σ₁,₂ = (σx+σy)/2 ± √[((σx−σy)/2)²+τxy²]","تنش‌های برشی روی صفحات اصلی صفرند.","Shear stress is zero on principal planes."),
+extraFormula("تنش فون‌مایزز دوبعدی","Von Mises stress (plane stress)","σ_vm = √(σx² − σxσy + σy² + 3τxy²)","معیار انرژی اعوجاج برای مواد شکل‌پذیر.","Distortion-energy criterion for ductile materials."),
+extraFormula("کمانش اویلر","Euler buckling load","P_cr = π²EI/(KL)²","برای ستون بلند و الاستیک؛ K ضریب طول مؤثر است.","For a long elastic column; K is the effective-length factor."),
+extraFormula("ضریب لاغری","Slenderness ratio","λ = KL/r_g","r_g شعاع ژیراسیون مقطع است.","r_g is the radius of gyration."),
+extraFormula("انرژی کرنشی محوری","Axial strain energy","U = P²L/(2AE)","برای بار محوری ثابت و رفتار خطی.","For constant axial load and linear behavior."),
+extraFormula("ضریب پواسون","Poisson ratio","ν = −ε_lat/ε_long","نسبت کرنش جانبی به طولی با علامت منفی.","Negative lateral-to-longitudinal strain ratio.")
+)
+"thermo" -> listOf(
+extraFormula("معادله انرژی جریان پایا","Steady-flow energy equation","q − w = Δh + Δ(V²/2) + gΔz","کمیت‌ها بر واحد جرم؛ یک ورودی و یک خروجی.","Per unit mass; one inlet and one outlet."),
+extraFormula("معادله پیوستگی جرمی","Mass conservation","ṁ = ρAV","برای جریان یک‌بعدی در مقطع.","For one-dimensional flow through a section."),
+extraFormula("ظرفیت گرمایی گاز ایده‌آل","Ideal-gas heat capacities","c_p − c_v = R","برای گاز ایده‌آل.","For an ideal gas."),
+extraFormula("انرژی داخلی گاز ایده‌آل","Ideal-gas internal energy","Δu = c_v ΔT","با فرض گرمای ویژه ثابت در بازه دما.","Assuming constant specific heat over the temperature range."),
+extraFormula("آنتالپی گاز ایده‌آل","Ideal-gas enthalpy","Δh = c_p ΔT","با فرض گرمای ویژه ثابت.","Assuming constant specific heat."),
+extraFormula("بازده حرارتی","Thermal efficiency","η_th = W_net,out/Q_in","نسبت کار خالص خروجی به گرمای ورودی.","Net work output divided by heat input."),
+extraFormula("ضریب عملکرد یخچال","Refrigerator COP","COP_R = Q_L/W_net,in","گرمای گرفته‌شده از فضای سرد بر کار ورودی.","Heat removed from the cold space over work input."),
+extraFormula("ضریب عملکرد پمپ گرما","Heat-pump COP","COP_HP = Q_H/W_net,in = COP_R + 1","برای چرخه بین دو مخزن حرارتی.","For a cycle between two thermal reservoirs."),
+extraFormula("حداکثر بازده کارنو","Carnot efficiency","η_C = 1 − T_L/T_H","دماها باید بر حسب کلوین باشند.","Temperatures must be in kelvin."),
+extraFormula("آنتروپی گاز ایده‌آل","Ideal-gas entropy change","Δs = c_p ln(T₂/T₁) − R ln(P₂/P₁)","برای گرمای ویژه ثابت و گاز ایده‌آل.","For constant specific heats and an ideal gas."),
+extraFormula("رابطه ایزنتروپیک گاز ایده‌آل","Isentropic ideal-gas relation","T₂/T₁ = (P₂/P₁)^((k−1)/k)","فرایند برگشت‌پذیر بی‌دررو؛ k=cp/cv.","Reversible adiabatic process; k=cp/cv."),
+extraFormula("کار فرایند هم‌فشار","Constant-pressure boundary work","W = P(V₂−V₁)","کار مرزی برای فشار ثابت.","Boundary work at constant pressure."),
+extraFormula("کار پلی‌تروپیک","Polytropic work","W = (P₂V₂−P₁V₁)/(1−n)","برای PVⁿ ثابت و n≠1؛ حالت n=1 لگاریتمی است.","For PV^n constant and n≠1; n=1 is logarithmic."),
+extraFormula("خواص مخلوط اشباع","Saturated-mixture property","y = y_f + x y_fg","برای y مانند v، u، h یا s.","For properties such as v, u, h or s."),
+extraFormula("گرمای نهان تبخیر","Latent heat of vaporization","h_fg = h_g − h_f","اختلاف آنتالپی بخار و مایع اشباع در یک فشار.","Difference between saturated-vapor and saturated-liquid enthalpy at a pressure."),
+extraFormula("بازده ایزنتروپیک توربین","Turbine isentropic efficiency","η_t = (h₁−h₂)/(h₁−h₂s)","خروجی واقعی نسبت به خروجی ایزنتروپیک.","Actual enthalpy drop divided by isentropic enthalpy drop."),
+extraFormula("بازده ایزنتروپیک کمپرسور","Compressor isentropic efficiency","η_c = (h₂s−h₁)/(h₂−h₁)","کار ورودی ایزنتروپیک بر کار ورودی واقعی.","Isentropic work input over actual work input."),
+extraFormula("چرخه اتو","Otto-cycle efficiency","η_Otto = 1 − 1/r^(k−1)","مدل هوای استاندارد با گرمای ویژه ثابت؛ r نسبت تراکم است.","Air-standard model with constant specific heats; r is compression ratio."),
+extraFormula("چرخه برایتون","Brayton-cycle efficiency","η_Brayton = 1 − 1/r_p^((k−1)/k)","مدل ایده‌آل با cp ثابت؛ r_p نسبت فشار کمپرسور است.","Ideal model with constant cp; r_p is compressor pressure ratio.")
+)
+"fluids" -> listOf(
+extraFormula("دبی جرمی","Mass flow rate","ṁ = ρAV","چگالی ضربدر سرعت متوسط و سطح مقطع.","Density times average speed and area."),
+extraFormula("عدد رینولدز","Reynolds number","Re = ρVD/μ = VD/ν","برای جریان داخلی در لوله، D قطر هیدرولیکی/لوله است.","For internal pipe flow, D is pipe or hydraulic diameter."),
+extraFormula("قانون ویسکوزیته نیوتن","Newton’s law of viscosity","τ = μ du/dy","برای سیال نیوتنی در برش ساده.","For a Newtonian fluid in simple shear."),
+extraFormula("معادله مومنتوم کنترل‌حجم","Control-volume momentum","ΣF = ṁ(V_out − V_in)","فرم ساده پایا، یک ورودی و یک خروجی؛ برداری.","Simplified steady one-inlet, one-outlet vector form."),
+extraFormula("نیروی هیدرواستاتیک سطح تخت","Hydrostatic force on a plane","F_R = ρ g h_c A","h_c عمق مرکز سطح از سطح آزاد است.","h_c is centroid depth below the free surface."),
+extraFormula("افت هد دارسی-ویسباخ","Darcy–Weisbach head loss","h_f = f (L/D) V²/(2g)","f ضریب اصطکاک دارسی است؛ با فنینگ اشتباه نشود.","f is the Darcy friction factor; do not confuse with Fanning factor."),
+extraFormula("افت موضعی","Minor head loss","h_m = K V²/(2g)","K ضریب افت اتصال یا شیر است.","K is the fitting or valve loss coefficient."),
+extraFormula("توان هیدرولیکی پمپ","Hydraulic pump power","P_h = ρ g Q H","توان منتقل‌شده به سیال؛ توان ورودی بیشتر و برابر P_h/η است.","Power delivered to fluid; input power is P_h/η."),
+extraFormula("ضریب فشار","Pressure coefficient","C_p = (p−p∞)/(½ρV∞²)","بی‌بعد و پرکاربرد در آیرودینامیک.","Dimensionless coefficient used in aerodynamics."),
+extraFormula("نیروی پسا","Drag force","F_D = ½ ρ V² C_D A","A سطح مرجع و CD ضریب پساست.","A is reference area and CD is drag coefficient."),
+extraFormula("عدد فرود","Froude number","Fr = V/√(gL)","اهمیت اثر گرانش در جریان‌های سطح آزاد.","Compares inertial and gravitational effects in free-surface flows."),
+extraFormula("فشار مطلق","Absolute pressure","p_abs = p_gauge + p_atm","فشار گیج نسبت به فشار اتمسفر سنجیده می‌شود.","Gauge pressure is measured relative to atmospheric pressure."),
+extraFormula("معادله برنولی به فرم هد","Bernoulli head equation","p/(ρg) + V²/(2g) + z = constant","برای جریان پایا، تراکم‌ناپذیر و بی‌اتلاف در امتداد خط جریان.","Steady, incompressible, inviscid flow along a streamline.")
+)
+"heat" -> listOf(
+extraFormula("مقاومت رسانش دیواره تخت","Plane-wall conduction resistance","R_cond = L/(kA)","برای رسانش یک‌بعدی پایا؛ Q̇=ΔT/R.","For steady 1D conduction; Q̇=ΔT/R."),
+extraFormula("مقاومت رسانش استوانه","Cylindrical conduction resistance","R_cond = ln(r₂/r₁)/(2πkL)","برای دیواره استوانه‌ای هم‌مرکز.","For a concentric cylindrical wall."),
+extraFormula("مقاومت جابه‌جایی","Convection resistance","R_conv = 1/(hA)","Q̇=ΔT/R_conv.","Q̇=ΔT/R_conv."),
+extraFormula("رسانش چندلایه سری","Composite-wall resistance","R_total = ΣR_i","مقاومت‌های حرارتی سری جمع می‌شوند.","Thermal resistances in series add."),
+extraFormula("پخشایی حرارتی","Thermal diffusivity","α = k/(ρ c_p)","نسبت توانایی رسانش به ظرفیت ذخیره انرژی حجمی.","Ratio of heat conduction capability to volumetric heat capacity."),
+extraFormula("عدد بیو","Biot number","Bi = h L_c/k_s","برای اعتبار روش ظرفیت متمرکز معمولاً Bi<0.1 لازم است.","Lumped-capacitance approximation is usually valid for Bi<0.1."),
+extraFormula("عدد فوریه","Fourier number","Fo = α t/L_c²","زمان بی‌بعد در رسانش گذرا.","Dimensionless time in transient conduction."),
+extraFormula("روش ظرفیت متمرکز","Lumped-capacitance temperature","(T−T∞)/(T_i−T∞) = exp(−hAt/(ρVc_p))","وقتی Bi کوچک باشد و دمای جسم تقریباً یکنواخت بماند.","When Bi is small and the body temperature is nearly uniform."),
+extraFormula("اختلاف دمای میانگین لگاریتمی","Log-mean temperature difference","ΔT_lm = (ΔT₁−ΔT₂)/ln(ΔT₁/ΔT₂)","در مبدل حرارتی با اختلاف دمای دو انتها.","For heat exchangers with terminal temperature differences."),
+extraFormula("رابطه نرخ انتقال مبدل","Heat-exchanger rate","Q̇ = U A ΔT_lm","U ضریب کلی انتقال حرارت است.","U is the overall heat-transfer coefficient."),
+extraFormula("بازده پره","Fin efficiency","η_f = Q̇_f/(h A_f (T_b−T∞))","نسبت انتقال واقعی پره به حالت پره با دمای پایه در تمام سطح.","Actual fin heat transfer over ideal isothermal-fin transfer."),
+extraFormula("شعاع بحرانی عایق استوانه","Critical insulation radius","r_cr = k_ins/h","برای استوانه؛ افزودن عایق تا شعاع بحرانی ممکن است اتلاف را زیاد کند.","For a cylinder; adding insulation up to this radius can increase heat loss."),
+extraFormula("رابطه شار رسانش","Fourier heat flux","q'' = −k dT/dx","علامت منفی نشان‌دهنده حرکت گرما به سمت دمای کمتر است.","Negative sign indicates heat flows toward lower temperature."),
+extraFormula("رابطه تابش سطح خاکستری","Gray-surface radiation","Q̇ = εσA(T_s⁴−T_sur⁴)","دماها بر حسب کلوین و محیط بزرگ هم‌دما فرض می‌شود.","Temperatures in kelvin; large isothermal surroundings assumed."),
+extraFormula("عدد نوسلت","Nusselt number","Nu = hL/k_f","نسبت انتقال جابه‌جایی به رسانش در لایه سیال.","Convection-to-conduction ratio across the fluid layer.")
+)
+"machine" -> listOf(
+extraFormula("سرعت زاویه‌ای","Angular velocity","ω = dθ/dt","نرخ تغییر زاویه بر حسب زمان.","Rate of angular displacement."),
+extraFormula("شتاب زاویه‌ای","Angular acceleration","α = dω/dt","نرخ تغییر سرعت زاویه‌ای.","Rate of change of angular velocity."),
+extraFormula("رابطه سرعت خطی و زاویه‌ای","Linear-angular velocity","v = ωr","برای نقطه‌ای در فاصله r از محور دوران.","For a point at radius r from the rotation axis."),
+extraFormula("رابطه شتاب مماسی","Tangential acceleration","a_t = αr","مولفه مماسی شتاب نقطه.","Tangential component of point acceleration."),
+extraFormula("رابطه شتاب نرمال","Normal acceleration","a_n = ω²r","به سمت مرکز انحناست.","Directed toward the center of curvature."),
+extraFormula("قانون چرخ‌دنده‌ها","Gear speed ratio","ω₁/ω₂ = −N₂/N₁","برای دو چرخ‌دنده خارجی؛ علامت منفی جهت مخالف را نشان می‌دهد.","For external gears; negative sign indicates opposite rotation."),
+extraFormula("مدول چرخ‌دنده","Gear module","m = d/N","قطر گام تقسیم بر تعداد دندانه؛ در واحدهای سازگار.","Pitch diameter divided by tooth count, consistent units."),
+extraFormula("درجه آزادی مکانیزم صفحه‌ای","Planar mobility (Gruebler)","M = 3(n−1) − 2J₁ − J₂","برای لینک‌های صلب صفحه‌ای و مفاصل ایده‌آل؛ n شامل زمین است.","For planar rigid links and ideal lower/higher pairs; n includes ground."),
+extraFormula("نسبت انتقال تسمه","Belt-drive speed ratio","ω₁/ω₂ ≈ D₂/D₁","بدون لغزش؛ قطرهای گام یا مؤثر به‌کار روند.","No slip; use pitch/effective diameters."),
+extraFormula("توان انتقالی","Transmitted power","P = Tω","T بر حسب N·m و ω بر حسب rad/s.","T in N·m and ω in rad/s."),
+extraFormula("نیروی گریز از مرکز معادل","Centrifugal force magnitude","F = m r ω²","در چارچوب چرخان؛ جهت شعاعی به بیرون برای نیروی مجازی.","In a rotating frame; fictitious force is radially outward."),
+extraFormula("گشتاور اینرسی","Rotational equation of motion","ΣM_G = I_G α","برای دوران صفحه‌ای حول مرکز جرم.","For planar rotation about the mass center."),
+extraFormula("انرژی جنبشی دورانی","Rotational kinetic energy","T_rot = ½ I ω²","I ممان جرم حول محور دوران است.","I is mass moment of inertia about the rotation axis.")
+)
+"design" -> listOf(
+extraFormula("تنش میانگین و دامنه خستگی","Fatigue mean and alternating stress","σ_m=(σ_max+σ_min)/2 ; σ_a=(σ_max−σ_min)/2","برای بارگذاری چرخه‌ای نرمال.","For cyclic normal loading."),
+extraFormula("معیار گودمن اصلاح‌شده","Modified Goodman criterion","σ_a/S_e + σ_m/S_ut = 1/n","طراحی خستگی با تنش میانگین کششی؛ در عمل باید ضریب اطمینان لحاظ شود.","Fatigue design with tensile mean stress; include factor of safety."),
+extraFormula("معیار سودربرگ","Soderberg criterion","σ_a/S_e + σ_m/S_y = 1/n","معمولاً محافظه‌کارانه‌تر از گودمن است.","Usually more conservative than Goodman."),
+extraFormula("معیار گربر","Gerber criterion","σ_a/S_e + (σ_m/S_ut)² = 1/n","رابطه سهمی برای مواد شکل‌پذیر؛ قرارداد طراحی را بررسی کنید.","Parabolic relation for ductile materials; check design convention."),
+extraFormula("ضریب تمرکز تنش","Stress concentration factor","K_t = σ_max/σ_nom","برای هندسه و بارگذاری مشخص از نمودار یا تحلیل به دست می‌آید.","Obtained from charts or analysis for the geometry and loading."),
+extraFormula("حد دوام اصلاح‌شده","Modified endurance limit","S_e = k_a k_b k_c k_d k_e k_f S'_e","ضرایب سطح، اندازه، بار، دما، قابلیت اطمینان و عوامل دیگر.","Surface, size, load, temperature, reliability and other factors."),
+extraFormula("سختی فنر مارپیچ","Helical spring rate","k = G d⁴/(8 D³ N_a)","فنر فشاری مارپیچ با سیم گرد؛ D قطر متوسط حلقه است.","Close-coiled round-wire compression spring; D is mean coil diameter."),
+extraFormula("تغییر طول فنر","Helical spring deflection","δ = 8 F D³ N_a/(G d⁴)","برای فنر مارپیچ با سیم گرد و فرض‌های استاندارد.","For a round-wire helical spring under standard assumptions."),
+extraFormula("تنش برشی فنر","Spring shear stress","τ = K_w 8FD/(πd³)","K_w ضریب وال؛ اثر انحنا و برش مستقیم را لحاظ می‌کند.","K_w is Wahl factor accounting for curvature and direct shear."),
+extraFormula("عمر پایه یاتاقان","Bearing basic rating life","L₁₀ = (C/P)^p × 10⁶ rev","p=3 برای ساچمه‌ای و 10/3 برای غلتکی؛ بار معادل P.","p=3 for ball and 10/3 for roller bearings; P is equivalent load."),
+extraFormula("قطر گام چرخ‌دنده","Gear pitch diameter","d = m N","m مدول و N تعداد دندانه است.","m is module and N is tooth count."),
+extraFormula("تنش خمشی دندانه لوییس","Lewis gear-tooth bending estimate","σ = F_t/(b m Y)","تقریب مقدماتی؛ طراحی واقعی به ضرایب استاندارد و عوامل دینامیکی نیاز دارد.","Preliminary estimate; full design needs standard and dynamic factors."),
+extraFormula("تنش برشی خار","Key shear stress","τ = 2T/(d b L)","برای خار مستطیلی با عرض b و طول L در محور قطر d.","For a rectangular key of width b and length L on shaft diameter d."),
+extraFormula("تنش لهیدگی خار","Key bearing stress","σ_b = 4T/(d h L)","h ارتفاع خار است؛ بارگذاری یکنواخت فرض شده است.","h is key height; assumes uniform bearing load."),
+extraFormula("تنش پیچشی با توان و دور","Shaft torque from power","T = 9550 P_kW/n_rpm","T بر حسب N·m؛ P بر حسب kW و n بر حسب rpm.","T in N·m; P in kW and n in rpm."),
+extraFormula("بار بحرانی اویلر","Euler critical column load","P_cr = π²EI/(KL)²","برای ستون بلند الاستیک؛ محدودیت‌های کاربرد بررسی شود.","For long elastic columns; check applicability."),
+extraFormula("تنش معادل فون‌مایزز","Von Mises equivalent stress","σ_vm = √(σ₁²+σ₂²−σ₁σ₂+3τ²)","برای حالت تنش صفحه‌ای با مؤلفه‌های مناسب.","For plane stress with the appropriate components."),
+extraFormula("توان و گشتاور با دور","Power-torque-speed relation","P_kW = T n/9550","T بر حسب N·m و n بر حسب rpm.","T in N·m and n in rpm."),
+extraFormula("عمر یاتاقان بر حسب ساعت","Bearing life in hours","L₁₀h = (10⁶/(60n))(C/P)^p","n دور بر دقیقه است.","n is rotational speed in rpm.")
+)
+"vibrations" -> listOf(
+extraFormula("معادله حرکت سیستم یک درجه آزادی","Single-DOF equation of motion","m ẍ + c ẋ + kx = F(t)","جرم، میرایی، سختی و نیروی تحریک.","Mass, damping, stiffness and excitation."),
+extraFormula("فرکانس طبیعی میرا","Damped natural frequency","ω_d = ω_n √(1−ζ²)","برای سیستم کم‌میرای ζ<1.","For an underdamped system, ζ<1."),
+extraFormula("نسبت میرایی بحرانی","Critical damping ratio","ζ = c/(2√(km))","ζ بدون بعد است.","Dimensionless damping ratio."),
+extraFormula("کاهش لگاریتمی","Logarithmic decrement","δ = ln(x_i/x_{i+1}) = 2πζ/√(1−ζ²)","دامنه‌های متوالی هم‌علامت در ارتعاش آزاد کم‌میرا.","Successive same-side peaks in free underdamped vibration."),
+extraFormula("بزرگنمایی دینامیکی","Dynamic magnification factor","M = 1/√[(1−r²)²+(2ζr)²]","r=ω/ω_n؛ پاسخ هارمونیک پایا.","r=ω/ω_n; steady harmonic response."),
+extraFormula("نسبت انتقال ارتعاش","Displacement transmissibility","T_R = √[(1+(2ζr)²)/((1−r²)²+(2ζr)²)]","برای تحریک پایه و مدل یک درجه آزادی.","For base excitation in a single-DOF model."),
+extraFormula("فرکانس طبیعی پیچشی","Torsional natural frequency","ω_n = √(k_t/I)","k_t سختی پیچشی و I ممان جرم دورانی است.","k_t is torsional stiffness and I is mass moment of inertia."),
+extraFormula("سختی پیچشی محور","Shaft torsional stiffness","k_t = GJ/L","برای محور یکنواخت.","For a uniform shaft."),
+extraFormula("انرژی ارتعاشی سیستم","Vibration energy","E = ½m ẋ² + ½k x²","برای سیستم آزاد بدون میرایی.","For an undamped free system."),
+extraFormula("فرکانس طبیعی بر حسب هرتز","Natural frequency in hertz","f_n = ω_n/(2π)","تعداد چرخه در ثانیه.","Cycles per second.")
+)
+"math" -> listOf(
+extraFormula("قاعده زنجیره‌ای","Chain rule","dy/dx = (dy/du)(du/dx)","برای تابع مرکب y(u(x)).","For a composite function y(u(x))."),
+extraFormula("مشتق نمایی","Exponential derivative","d(e^x)/dx = e^x","تابع نمایی طبیعی مشتق خودش است.","The natural exponential is its own derivative."),
+extraFormula("مشتق لگاریتم طبیعی","Natural logarithm derivative","d(ln x)/dx = 1/x","برای x>0.","For x>0."),
+extraFormula("انتگرال نمایی","Exponential integral","∫e^(ax) dx = e^(ax)/a + C","برای a≠0.","For a≠0."),
+extraFormula("انتگرال سینوس","Sine integral","∫sin(ax)dx = −cos(ax)/a + C","برای a≠0.","For a≠0."),
+extraFormula("مشتق جزئی","Partial derivative","∂f/∂x","سایر متغیرهای مستقل ثابت فرض می‌شوند.","Other independent variables are held constant."),
+extraFormula("سری هندسی","Geometric series","Σ_(n=0)^∞ arⁿ = a/(1−r)","برای |r|<1.","For |r|<1."),
+extraFormula("معادله مشخصه مرتبه دوم","Second-order characteristic equation","a r² + b r + c = 0","ریشه‌ها رفتار حل معادله خطی را تعیین می‌کنند.","Roots determine the behavior of a linear ODE solution."),
+extraFormula("تبدیل لاپلاس مشتق اول","Laplace transform of first derivative","L{f'} = sF(s) − f(0)","برای تابع با تبدیل لاپلاس موجود.","For functions with an existing Laplace transform."),
+extraFormula("تبدیل لاپلاس مشتق دوم","Laplace transform of second derivative","L{f''} = s²F(s) − s f(0) − f'(0)","شرایط اولیه در تبدیل ظاهر می‌شوند.","Initial conditions appear in the transform."),
+extraFormula("تبدیل لاپلاس نمایی","Laplace transform of exponential","L{e^(at)} = 1/(s−a)","برای s>a.","For s>a."),
+extraFormula("سری تیلور","Taylor series","f(x)=Σ f⁽ⁿ⁾(a)(x−a)ⁿ/n!","در بازه همگرایی تابع.","Within the function's interval of convergence.")
+)
+else -> emptyList()
+}
+
 private val lessons = listOf(
  Lesson("statics","استاتیک","Statics","تعادل نیروها و گشتاورها","Force and moment equilibrium",
  listOf(formula("قانون تعادل نیروها","ΣF = 0","برآیند نیروها در حالت تعادل صفر است.","The resultant force is zero in equilibrium."),formula("تعادل گشتاورها","ΣM = 0","مجموع گشتاورها حول هر نقطه صفر است.","The sum of moments about any point is zero."),formula("گشتاور نیرو","M = F d⊥","فاصله عمودی خط اثر نیرو تا نقطه.","Perpendicular distance to the line of action."),formula("اصطکاک حدی","Fₛ,max = μₛ N","حداکثر اصطکاک ایستایی برابر ضریب اصطکاک در نیروی عمودی است.","Maximum static friction.")),
@@ -178,7 +327,7 @@ private val lessons = listOf(
  q("مشتق تابع ln(x) چیست؟","Derivative of ln(x)?","۱/x برای x مثبت.","1/x for x>0."),
  q("هدف شرط مرزی در معادله دیفرانسیل چیست؟","Purpose of a boundary condition in a differential equation?","تعیین پاسخ با اعمال مقادیر یا قیود در مرز دامنه.","Determine the solution using values or constraints at domain boundaries.")
  ))
-)
+).map { lesson -> lesson.copy(formulas = lesson.formulas + extraFormulas(lesson.id)) }
 
 @Composable
 fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
