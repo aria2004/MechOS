@@ -49,25 +49,28 @@ fun MechOSApp() {
     val fa = !english
     MaterialTheme(colorScheme = if (dark) darkColorScheme(primary=Blue, background=bg, surface=surface) else lightColorScheme(primary=Color(0xFF087FC2), background=bg, surface=surface)) {
         Scaffold(containerColor=bg, bottomBar={
-            NavigationBar(containerColor=surface) {
-                NavigationBarItem(selected=page==0,onClick={page=0},icon={Icon(Icons.Default.Dashboard,null)},label={Text(if(fa) "خانه" else "Home")})
-                NavigationBarItem(selected=page==1,onClick={page=1},icon={Icon(Icons.Default.Calculate,null)},label={Text(if(fa) "محاسبات" else "Calculator")})
-                NavigationBarItem(selected=page==2,onClick={page=2},icon={Icon(Icons.Default.School,null)},label={Text(if(fa) "دروس" else "Courses")})
-                NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas")})
-                NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.SwapHoriz,null)},label={Text(if(fa) "تبدیل واحد" else "Convert")})
-                NavigationBarItem(selected=page==5,onClick={page=5},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
+            NavigationBar(containerColor=surface, tonalElevation=5.dp) {
+                NavigationBarItem(selected=page==0,onClick={page=0},icon={Icon(Icons.Default.Dashboard,null)},label={Text(if(fa) "خانه" else "Home", maxLines=1)},alwaysShowLabel=false)
+                NavigationBarItem(selected=page==1,onClick={page=1},icon={Icon(Icons.Default.Calculate,null)},label={Text(if(fa) "محاسبات" else "Calculator", maxLines=1)},alwaysShowLabel=false)
+                NavigationBarItem(selected=page==2,onClick={page=2},icon={Icon(Icons.Default.School,null)},label={Text(if(fa) "دروس" else "Courses", maxLines=1)},alwaysShowLabel=false)
+                NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas", maxLines=1)},alwaysShowLabel=false)
+                NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.SwapHoriz,null)},label={Text(if(fa) "تبدیل" else "Convert", maxLines=1)},alwaysShowLabel=false)
+                NavigationBarItem(selected=page==5,onClick={page=5},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings", maxLines=1)},alwaysShowLabel=false)
             }
         }) { padding ->
             CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
-            Column(Modifier.fillMaxSize().background(bg).padding(padding).padding(horizontal=18.dp)) {
-                Row(Modifier.fillMaxWidth().padding(top=18.dp,bottom=18.dp), horizontalArrangement=Arrangement.SpaceBetween, verticalAlignment=Alignment.CenterVertically) {
+            BoxWithConstraints(Modifier.fillMaxSize().background(bg).padding(padding)) {
+                val compact = maxWidth < 380.dp
+                val sidePadding = when { maxWidth < 360.dp -> 12.dp; maxWidth < 600.dp -> 18.dp; else -> 28.dp }
+                Column(Modifier.fillMaxSize().widthIn(max=920.dp).align(Alignment.TopCenter).padding(horizontal=sidePadding)) {
+                Row(Modifier.fillMaxWidth().padding(top=if(compact) 12.dp else 20.dp,bottom=if(compact) 12.dp else 20.dp), horizontalArrangement=Arrangement.SpaceBetween, verticalAlignment=Alignment.CenterVertically) {
                     Row(verticalAlignment=Alignment.CenterVertically) {
                         Box(Modifier.size(42.dp).background(Blue, RoundedCornerShape(13.dp)), contentAlignment=Alignment.Center) {
                             Icon(Icons.Default.SettingsSuggest, null, tint=Color.White, modifier=Modifier.size(28.dp))
                         }
                         Spacer(Modifier.width(10.dp))
                         Column {
-                            Text("MechOS", color=fg, fontWeight=FontWeight.Black, fontSize=22.sp)
+                            Text("MechOS", color=fg, fontWeight=FontWeight.Black, fontSize=if(compact) 19.sp else 22.sp)
                             Text("ENGINEERING TOOLBOX", color=muted, fontSize=9.sp, letterSpacing=1.5.sp)
                         }
                     }
@@ -88,6 +91,7 @@ fun MechOSApp() {
                     else -> QuizPage(fa, fg, muted, surface)
                 }
             }
+                }
             }
         }
     }
