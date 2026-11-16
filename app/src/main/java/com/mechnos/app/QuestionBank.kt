@@ -9,7 +9,7 @@ data class PracticeQuestion(val difficulty:Difficulty,val qFa:String,val qEn:Str
 private fun nf(v:Double)=String.format(Locale.US,"%.2f",v)
 private fun item(d:Difficulty,qf:String,qe:String,af:String,ae:String)=PracticeQuestion(d,qf,qe,af,ae)
 /** 100 original practice items per course: 10 existing review questions plus 90 generated numerical/conceptual variants. */
-fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
+internal fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
  val old=lesson.questions.map { item(Difficulty.EASY,it.qFa,it.qEn,it.aFa,it.aEn) }
  val gens:List<(Int)->PracticeQuestion> = when(lesson.id) {
  "statics" -> listOf(
@@ -22,7 +22,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val w=200.0+25*i;val a=15.0+5*i;val p=w*kotlin.math.sin(a*PI/180);item(Difficulty.HARD,"جسم "+nf(w)+" N روی سطح شیبدار "+nf(a)+" درجه است. مؤلفه وزن موازی سطح؟","A "+nf(w)+" N body is on a "+nf(a)+" degree incline. Weight component parallel to plane?","W∥=W sinθ="+nf(w)+"×sin("+nf(a)+"°)="+nf(p)+" N.","Wparallel=W sinθ="+nf(p)+" N down the plane.")},
   {i->val a=2.0+i*.3;val b=1.0+i*.2;val x=(a*.5+b*1.5)/(a+b);item(Difficulty.HARD,"دو ناحیه با مساحت "+nf(a)+" و "+nf(b)+" m² در x=0.5 و 1.5 m هستند. x مرکز سطح؟","Areas "+nf(a)+" and "+nf(b)+" m² are located at x=0.5 and 1.5 m. Find centroid x.","x̄=ΣAixi/ΣAi=("+nf(a)+"×.5+"+nf(b)+"×1.5)/("+nf(a)+"+"+nf(b)+")="+nf(x)+" m.","xbar=ΣAixi/ΣAi="+nf(x)+" m.")},
   {i->val f1=100.0+10*i;val f2=60.0+5*i;val r=f1-f2;item(Difficulty.HARD,"دو نیروی مخالف "+nf(f1)+" و "+nf(f2)+" N وارد می‌شوند. نیروی متعادل‌کننده؟","Opposing forces "+nf(f1)+" and "+nf(f2)+" N act. Equilibrant?","R="+nf(f1)+"−"+nf(f2)+"="+nf(r)+" N؛ متعادل‌کننده "+nf(r)+" N در جهت مخالف R است.","R="+nf(r)+" N; equilibrant is "+nf(r)+" N opposite R.")}
- ),
+ )
  "strength" -> listOf(
   {i->val f=1000.0+250*i;val a=100.0+10*i;val s=f/a;item(Difficulty.EASY,"نیروی محوری "+nf(f)+" N بر سطح "+nf(a)+" mm² وارد است. تنش؟","Axial force "+nf(f)+" N acts over "+nf(a)+" mm². Stress?","σ=F/A="+nf(f)+"/"+nf(a)+"="+nf(s)+" MPa.","σ=F/A="+nf(s)+" MPa.")},
   {i->val dl=1.0+i*.2;val l=1000.0+100*i;val e=dl/l;item(Difficulty.EASY,"میله "+nf(l)+" mm به اندازه "+nf(dl)+" mm کشیده شده. کرنش؟","A "+nf(l)+" mm bar elongates "+nf(dl)+" mm. Strain?","ε=ΔL/L="+nf(dl)+"/"+nf(l)+"="+nf(e)+".","ε=ΔL/L="+nf(e)+".")},
@@ -33,7 +33,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val sy=250.0+10*i;val sw=100.0+5*i;val fs=sy/sw;item(Difficulty.HARD,"تنش تسلیم "+nf(sy)+" MPa و تنش کاری "+nf(sw)+" MPa است. ضریب اطمینان؟","Yield stress "+nf(sy)+" MPa, working stress "+nf(sw)+" MPa. Factor of safety?","n=σy/σwork="+nf(sy)+"/"+nf(sw)+"="+nf(fs)+".","n=σy/σwork="+nf(fs)+".")},
   {i->val l=2.0+.1*i;val p=PI*PI*200e9*8e-6/(l*l);item(Difficulty.HARD,"ستون دوسر مفصلی با E=200 GPa، I=8×10⁻⁶ m⁴ و L="+nf(l)+" m دارد. بار بحرانی اویلر؟","Pin-ended column: E=200 GPa, I=8×10⁻⁶ m⁴, L="+nf(l)+" m. Euler load?","Pcr=π²EI/L²=π²×200×10⁹×8×10⁻⁶/"+nf(l*l)+"="+nf(p)+" N.","Pcr=π²EI/L²="+nf(p)+" N.")},
   {i->val v=10000.0+1000*i;val t=v*20000/(8e6*10);item(Difficulty.HARD,"V="+nf(v)+" N، Q=20000 mm³، I=8×10⁶ mm⁴ و t=10 mm. تنش برشی تیر؟","V="+nf(v)+" N, Q=20000 mm³, I=8×10⁶ mm⁴, t=10 mm. Beam shear stress?","τ=VQ/(It)=("+nf(v)+"×20000)/(8×10⁶×10)="+nf(t)+" MPa.","τ=VQ/(It)="+nf(t)+" MPa.")}
- ),
+ )
  "thermo" -> listOf(
   {i->val m=1.0+i*.5;val t=300.0+10*i;val v=m*.287*t/100;item(Difficulty.EASY,"گاز ایده‌آل m="+nf(m)+" kg، T="+nf(t)+" K، P=100 kPa و R=0.287 دارد. حجم؟","Ideal gas m="+nf(m)+" kg, T="+nf(t)+" K, P=100 kPa, R=0.287. Volume?","PV=mRT ⇒ V=mRT/P="+nf(m)+"×.287×"+nf(t)+"/100="+nf(v)+" m³.","PV=mRT ⇒ V="+nf(v)+" m³.")},
   {i->val m=2.0+i*.5;val dt=10.0+5*i;val q=m*4.18*dt;item(Difficulty.EASY,nf(m)+" kg آب با c=4.18 و ΔT="+nf(dt)+" K گرم می‌شود. گرما؟",nf(m)+" kg water with c=4.18 and ΔT="+nf(dt)+" K is heated. Heat?","Q=mcΔT="+nf(m)+"×4.18×"+nf(dt)+"="+nf(q)+" kJ.","Q=mcΔT="+nf(q)+" kJ.")},
@@ -44,7 +44,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val q=100.0+10*i;val w=25.0+2*i;val cop=q/w;item(Difficulty.HARD,"یخچال "+nf(q)+" kJ گرما می‌گیرد و "+nf(w)+" kJ کار مصرف می‌کند. COP؟","Refrigerator removes "+nf(q)+" kJ using "+nf(w)+" kJ work. COP?","COP_R=QL/Win="+nf(q)+"/"+nf(w)+"="+nf(cop)+".","COP_R=QL/Win="+nf(cop)+".")},
   {i->val th=500.0+20*i;val eta=100*(1-300/th);item(Difficulty.HARD,"مخزن گرم "+nf(th)+" K و سرد 300 K است. بازده کارنو؟","Hot reservoir "+nf(th)+" K, cold reservoir 300 K. Carnot efficiency?","η=1−TL/TH=1−300/"+nf(th)+"="+nf(eta)+"%.","ηCarnot="+nf(eta)+"%.")},
   {i->val m=1.0+i*.2;val dt=50.0+5*i;val du=m*.718*dt;item(Difficulty.HARD,"گاز ایده‌آل "+nf(m)+" kg با cv=0.718 و ΔT="+nf(dt)+" K دارد. ΔU؟","Ideal gas "+nf(m)+" kg, cv=0.718, ΔT="+nf(dt)+" K. ΔU?","ΔU=mc_vΔT="+nf(m)+"×.718×"+nf(dt)+"="+nf(du)+" kJ.","ΔU=mc_vΔT="+nf(du)+" kJ.")}
- ),
+ )
  "fluids" -> listOf(
   {i->val h=.5+.2*i;val p=1000*9.81*h;item(Difficulty.EASY,"فشار گیج آب در عمق "+nf(h)+" m؟ (ρ=1000)","Water gauge pressure at depth "+nf(h)+" m? (ρ=1000)","p=ρgh=1000×9.81×"+nf(h)+"="+nf(p)+" Pa="+nf(p/1000)+" kPa.","p=ρgh="+nf(p/1000)+" kPa.")},
   {i->val a1=20.0+2*i;val a2=10.0+i;val v=a1*3/a2;item(Difficulty.EASY,"A1="+nf(a1)+" cm²، V1=3 m/s، A2="+nf(a2)+" cm². V2؟","A1="+nf(a1)+" cm², V1=3 m/s, A2="+nf(a2)+" cm². Find V2.","A1V1=A2V2 ⇒ V2="+nf(a1)+"×3/"+nf(a2)+"="+nf(v)+" m/s.","Continuity gives V2="+nf(v)+" m/s.")},
@@ -55,7 +55,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val l=10.0+2*i;val hf=.02*l/.05*4/19.62;item(Difficulty.HARD,"لوله f=0.02، L="+nf(l)+" m، D=0.05 m و V=2 m/s دارد. افت هد؟","Pipe f=0.02, L="+nf(l)+" m, D=0.05 m, V=2 m/s. Head loss?","hf=f(L/D)V²/(2g)=.02×("+nf(l)+"/.05)×4/19.62="+nf(hf)+" m.","Darcy-Weisbach gives hf="+nf(hf)+" m.")},
   {i->val q=.01+.001*i;val h=10.0+2*i;val p=1000*9.81*q*h;item(Difficulty.HARD,"پمپ آب Q="+nf(q)+" m³/s و H="+nf(h)+" m دارد. توان هیدرولیکی؟","Water pump Q="+nf(q)+" m³/s and H="+nf(h)+" m. Hydraulic power?","Ph=ρgQH=1000×9.81×"+nf(q)+"×"+nf(h)+"="+nf(p)+" W.","Ph=ρgQH="+nf(p)+" W.")},
   {i->val v=20.0+2*i;val fd=.5*1.2*v*v*.8*1.5;item(Difficulty.HARD,"ρ=1.2، V="+nf(v)+" m/s، CD=0.8 و A=1.5 m². نیروی پسا؟","ρ=1.2, V="+nf(v)+" m/s, CD=0.8, A=1.5 m². Drag?","FD=½ρV²CDA=0.5×1.2×"+nf(v)+"²×.8×1.5="+nf(fd)+" N.","FD=½ρV²CDA="+nf(fd)+" N.")}
- ),
+ )
  "heat" -> listOf(
   {i->val a=.01+.002*i;val dt=50.0+5*i;val q=200*a*dt/.02;item(Difficulty.EASY,"دیواره k=200 W/mK، A="+nf(a)+" m²، ΔT="+nf(dt)+" K و L=0.02 m دارد. نرخ رسانش؟","Wall k=200 W/mK, A="+nf(a)+" m², ΔT="+nf(dt)+" K, L=0.02 m. Conduction rate?","Qdot=kAΔT/L=200×"+nf(a)+"×"+nf(dt)+"/.02="+nf(q)+" W.","Qdot=kAΔT/L="+nf(q)+" W.")},
   {i->val h=10.0+2*i;val q=h*2*30;item(Difficulty.EASY,"همرفت h="+nf(h)+" W/m²K، سطح 2 m² و ΔT=30 K دارد. نرخ؟","Convection h="+nf(h)+" W/m²K, A=2 m², ΔT=30 K. Rate?","Qdot=hAΔT="+nf(h)+"×2×30="+nf(q)+" W.","Qdot=hAΔT="+nf(q)+" W.")},
@@ -66,7 +66,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val dt=20.0+2*i;val q=1000.0+100*i;val r=dt/q;item(Difficulty.HARD,"ΔT="+nf(dt)+" K و Qdot="+nf(q)+" W است. مقاومت حرارتی معادل؟","ΔT="+nf(dt)+" K and Qdot="+nf(q)+" W. Equivalent thermal resistance?","Rth=ΔT/Qdot="+nf(dt)+"/"+nf(q)+"="+nf(r)+" K/W.","Rth=ΔT/Qdot="+nf(r)+" K/W.")},
   {i->val dt=50.0+5*i;val dl=12e-6*2*dt;item(Difficulty.HARD,"میله فولادی α=12×10⁻⁶، L=2 m و ΔT="+nf(dt)+" K دارد. انبساط آزاد؟","Steel rod α=12e−6, L=2 m, ΔT="+nf(dt)+" K. Free expansion?","ΔL=αLΔT=12e−6×2×"+nf(dt)+"="+nf(dl)+" m = "+nf(dl*1000)+" mm.","ΔL=αLΔT="+nf(dl*1000)+" mm.")},
   {i->val bi=.05+.05*i;val ok=bi<=.1;item(Difficulty.HARD,"عدد بیو Bi="+nf(bi)+" است. آیا تقریب ظرفیت متمرکز (Bi≤0.1) قابل قبول است؟","Biot number is "+nf(bi)+". Is lumped capacitance (Bi≤0.1) acceptable?","معیار تقریبی Bi≤0.1 است؛ در این مثال "+(if(ok)"بله، قابل قبول است." else "خیر، مقاومت رسانش داخلی مهم است."),"Criterion is Bi≤0.1; "+(if(ok)"yes, acceptable." else "no, internal conduction resistance matters."))}
- ),
+ )
  "dynamics" -> listOf(
   {i->val v0=2.0+i;val a=1.0+.2*i;val v=v0+a*3;item(Difficulty.EASY,"v0="+nf(v0)+" m/s، a="+nf(a)+" m/s²، زمان 3 s. سرعت نهایی؟","v0="+nf(v0)+" m/s, a="+nf(a)+" m/s², t=3 s. Final speed?","v=v0+at="+nf(v0)+"+"+nf(a)+"×3="+nf(v)+" m/s.","v=v0+at="+nf(v)+" m/s.")},
   {i->val m=2.0+i;val a=1.5+.2*i;val f=m*a;item(Difficulty.EASY,"جرم "+nf(m)+" kg با شتاب "+nf(a)+" m/s² حرکت می‌کند. نیروی خالص؟","Mass "+nf(m)+" kg accelerates at "+nf(a)+" m/s². Net force?","ΣF=ma="+nf(m)+"×"+nf(a)+"="+nf(f)+" N.","ΣF=ma="+nf(f)+" N.")},
@@ -77,7 +77,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val v=2.0+i*.5;val s=v*4;item(Difficulty.HARD,"سرعت ثابت "+nf(v)+" m/s به مدت 4 s. جابه‌جایی؟","Constant speed "+nf(v)+" m/s for 4 s. Displacement?","s=vt="+nf(v)+"×4="+nf(s)+" m؛ شتاب صفر است.","s=vt="+nf(s)+" m; acceleration is zero.")},
   {i->val m=5.0+i;val mu=.2+.02*i;val f=mu*m*9.81;item(Difficulty.HARD,"جرم "+nf(m)+" kg روی سطح افقی با μk="+nf(mu)+" می‌لغزد. اصطکاک جنبشی؟","Mass "+nf(m)+" kg slides on horizontal surface with μk="+nf(mu)+". Kinetic friction?","N=mg="+nf(m*9.81)+" N؛ Fk=μkN="+nf(mu)+"×"+nf(m*9.81)+"="+nf(f)+" N.","Fk=μkmg="+nf(f)+" N.")},
   {i->val r=.3+.05*i;val w=10.0+2*i;val a=r*w*w;item(Difficulty.HARD,"نقطه‌ای در شعاع "+nf(r)+" m با ω="+nf(w)+" rad/s می‌چرخد. شتاب مرکزگرا؟","Point at radius "+nf(r)+" m rotates at ω="+nf(w)+" rad/s. Centripetal acceleration?","an=rω²="+nf(r)+"×"+nf(w)+"²="+nf(a)+" m/s².","an=rω²="+nf(a)+" m/s².")}
- ),
+ )
  "machine" -> listOf(
   {i->val z1=20.0+2*i;val z2=40.0+4*i;val n2=1200*z1/z2;item(Difficulty.EASY,"چرخ‌دنده محرک "+nf(z1)+" و متحرک "+nf(z2)+" دندانه دارد. دور ورودی 1200 rpm؛ دور خروجی؟","Driver gear "+nf(z1)+" teeth, driven "+nf(z2)+" teeth. Input 1200 rpm; output speed?","n2/n1=Z1/Z2 ⇒ n2=1200×"+nf(z1)+"/"+nf(z2)+"="+nf(n2)+" rpm.","n2=n1 Z1/Z2="+nf(n2)+" rpm.")},
   {i->val t=10.0+2*i;val w=100.0+10*i;val p=t*w;item(Difficulty.EASY,"گشتاور "+nf(t)+" N.m و سرعت زاویه‌ای "+nf(w)+" rad/s است. توان؟","Torque "+nf(t)+" N.m and angular speed "+nf(w)+" rad/s. Power?","P=Tω="+nf(t)+"×"+nf(w)+"="+nf(p)+" W.","P=Tω="+nf(p)+" W.")},
@@ -88,7 +88,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val t=5.0+i;val w=2.0+.2*i;val p=t*w;item(Difficulty.HARD,"گشتاور مقاوم "+nf(t)+" N.m و ω="+nf(w)+" rad/s است. توان ایده‌آل لازم؟","Resisting torque "+nf(t)+" N.m, ω="+nf(w)+" rad/s. Ideal power?","P=Tω="+nf(t)+"×"+nf(w)+"="+nf(p)+" W؛ تلفات توان ورودی را بیشتر می‌کند.","P=Tω="+nf(p)+" W; losses increase input power.")},
   {i->val ratio=2.0+.2*i;val n=1000/ratio;item(Difficulty.HARD,"نسبت کاهش سرعت "+nf(ratio)+":1 و دور ورودی 1000 rpm است. دور خروجی؟","Reduction ratio "+nf(ratio)+":1, input 1000 rpm. Output speed?","nout=nin/i=1000/"+nf(ratio)+"="+nf(n)+" rpm.","nout=1000/i="+nf(n)+" rpm.")},
   {i->val k=1000.0+100*i;val x=.01+.002*i;val f=k*x;item(Difficulty.HARD,"فنر با k="+nf(k)+" N/m به اندازه "+nf(x)+" m فشرده شده. نیروی فنر؟","Spring k="+nf(k)+" N/m compressed by "+nf(x)+" m. Force?","F=kx="+nf(k)+"×"+nf(x)+"="+nf(f)+" N؛ جهت خلاف جابه‌جایی.","F=kx="+nf(f)+" N opposite displacement.")}
- ),
+ )
  "design" -> listOf(
   {i->val p=1000.0+200*i;val w=2*PI*1000/60;val t=p/w;item(Difficulty.EASY,"توان "+nf(p)+" W در 1000 rpm منتقل می‌شود. گشتاور؟","Power "+nf(p)+" W at 1000 rpm. Torque?","ω=2πn/60=104.72 rad/s؛ T=P/ω="+nf(p)+"/104.72="+nf(t)+" N.m.","T=P/ω="+nf(t)+" N.m.")},
   {i->val f=1000.0+200*i;val a=50.0+5*i;val s=f/a;item(Difficulty.EASY,"پیچ نیروی کششی "+nf(f)+" N و سطح مؤثر "+nf(a)+" mm² دارد. تنش؟","Bolt tensile load "+nf(f)+" N, area "+nf(a)+" mm². Stress?","σ=F/A="+nf(f)+"/"+nf(a)+"="+nf(s)+" MPa.","σ=F/A="+nf(s)+" MPa.")},
@@ -99,7 +99,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val f=1000.0+100*i;val l=40.0+i;val p=f/(25*l);item(Difficulty.HARD,"پین با بار "+nf(f)+" N، قطر 25 mm و طول درگیری "+nf(l)+" mm دارد. فشار اتکایی؟","Pin load "+nf(f)+" N, diameter 25 mm, engagement "+nf(l)+" mm. Bearing pressure?","pb=F/(dL)="+nf(f)+"/(25×"+nf(l)+")="+nf(p)+" MPa.","pb=F/(dL)="+nf(p)+" MPa.")},
   {i->val sd=450.0+10*i;val n=300/sd;item(Difficulty.HARD,"σy=300 MPa و تنش طراحی "+nf(sd)+" MPa است. نسبت تسلیم به تنش طراحی؟","σy=300 MPa and design stress "+nf(sd)+" MPa. Safety ratio?","n=σy/σdesign=300/"+nf(sd)+"="+nf(n)+".","n=300/σdesign="+nf(n)+".")},
   {i->val f=10000.0+1000*i;val area=.707*6*100;val tau=f/area;item(Difficulty.HARD,"جوش با طول مؤثر 100 mm و گلویی 0.707×6 mm بار "+nf(f)+" N دارد. تنش متوسط؟","Weld effective length 100 mm, throat 0.707×6 mm, load "+nf(f)+" N. Average stress?","A=0.707×6×100=424.2 mm²؛ τ=F/A="+nf(f)+"/424.2="+nf(tau)+" MPa.","τ=F/A="+nf(tau)+" MPa.")}
- ),
+ )
  "vibrations" -> listOf(
   {i->val m=1.0+i*.5;val k=100.0+20*i;val w=sqrt(k/m);item(Difficulty.EASY,"جرم "+nf(m)+" kg و سختی "+nf(k)+" N/m است. ωn؟","Mass "+nf(m)+" kg, stiffness "+nf(k)+" N/m. Natural angular frequency?","ωn=√(k/m)=√("+nf(k)+"/"+nf(m)+")="+nf(w)+" rad/s.","ωn=√(k/m)="+nf(w)+" rad/s.")},
   {i->val m=2.0+i*.5;val k=200.0+20*i;val f=sqrt(k/m)/(2*PI);item(Difficulty.EASY,"برای m="+nf(m)+" kg و k="+nf(k)+" N/m، فرکانس طبیعی؟","For m="+nf(m)+" kg and k="+nf(k)+" N/m, natural frequency?","fn=(1/2π)√(k/m)="+nf(f)+" Hz.","fn="+nf(f)+" Hz.")},
@@ -110,7 +110,7 @@ fun practiceQuestionBank(lesson:Lesson):List<PracticeQuestion> {
   {i->val x2=7.0-i*.2;val d=ln(10.0/x2);item(Difficulty.HARD,"دو قله متوالی نوسان 10 و "+nf(x2)+" mm هستند. کاهش لگاریتمی؟","Successive peaks are 10 and "+nf(x2)+" mm. Log decrement?","δ=ln(x1/x2)=ln(10/"+nf(x2)+")="+nf(d)+".","δ=ln(x1/x2)="+nf(d)+".")},
   {i->val wn=10.0+i;val wd=wn*sqrt(1-.2*.2);item(Difficulty.HARD,"ωn="+nf(wn)+" rad/s و ζ=0.2 است. فرکانس زاویه‌ای میرا؟","ωn="+nf(wn)+" rad/s, ζ=0.2. Damped angular frequency?","ωd=ωn√(1−ζ²)="+nf(wn)+"√.96="+nf(wd)+" rad/s.","ωd="+nf(wd)+" rad/s.")},
   {i->val f=5.0+i;val a=(2*PI*f).pow(2)*.01;item(Difficulty.HARD,"نوسان هارمونیک f="+nf(f)+" Hz و دامنه 0.01 m دارد. بیشینه شتاب؟","Harmonic motion f="+nf(f)+" Hz, amplitude 0.01 m. Maximum acceleration?","amax=ω²X=(2πf)²X="+nf(a)+" m/s².","amax=(2πf)²X="+nf(a)+" m/s².")}
- ),
+ )
  "math" -> listOf(
   {i->val a=2.0+i;val v=6*a;item(Difficulty.EASY,"مشتق f(x)="+nf(a)+"x² را در x=3 بیابید.","Find derivative of f(x)="+nf(a)+"x² at x=3.","f′=2ax؛ f′(3)=6×"+nf(a)+"="+nf(v)+".","f′(3)="+nf(v)+".")},
   {i->val a=1.0+i;val v=2*a+4;item(Difficulty.EASY,"انتگرال معین ∫₀² ("+nf(a)+"x+2) dx را بیابید.","Evaluate ∫₀² ("+nf(a)+"x+2) dx.","[ax²/2+2x]₀²=2a+4="+nf(v)+".","Integral="+nf(v)+".")},
