@@ -119,35 +119,7 @@ fun ToolCard(icon: androidx.compose.ui.graphics.vector.ImageVector, title:String
 
 @Composable
 fun CalculatorPage(fa:Boolean, fg:Color, muted:Color, surface:Color) {
-    var category by remember { mutableStateOf(0) }
-    var a by remember { mutableStateOf("100") }
-    var b by remember { mutableStateOf("20") }
-    val x = a.toDoubleOrNull()
-    val y = b.toDoubleOrNull()
-    val result = when(category) {
-        0 -> if(x!=null && y!=null && y!=0.0) "%.4f".format(Locale.US, x/y) else "—"
-        1 -> if(x!=null && y!=null) "%.4f".format(Locale.US, x*y) else "—"
-        2 -> if(x!=null && y!=null) "%.4f".format(Locale.US, x+y) else "—"
-        else -> if(x!=null && y!=null) "%.4f".format(Locale.US, x-y) else "—"
-    }
-    Column(verticalArrangement=Arrangement.spacedBy(14.dp)) {
-        Text(if(fa) "ماشین‌حساب مهندسی" else "Engineering Calculator", color=fg, fontSize=23.sp, fontWeight=FontWeight.Bold)
-        Text(if(fa) "محاسبات پایه با دقت اعشاری" else "Basic calculations with decimal precision", color=muted, fontSize=13.sp)
-        Row(horizontalArrangement=Arrangement.spacedBy(7.dp)) {
-            listOf(if(fa)"تقسیم" else "Divide",if(fa)"ضرب" else "Multiply",if(fa)"جمع" else "Add",if(fa)"تفریق" else "Subtract").forEachIndexed { i,s ->
-                FilterChip(selected=category==i,onClick={category=i},label={Text(s,fontSize=11.sp)})
-            }
-        }
-        NumberField(if(fa) "عدد اول" else "First value",a,{a=it},surface,fg)
-        NumberField(if(fa) "عدد دوم" else "Second value",b,{b=it},surface,fg)
-        Surface(color=Color(0xFF103B60),shape=RoundedCornerShape(20.dp)) {
-            Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Text(if(fa) "نتیجه محاسبه" else "CALCULATION RESULT",color=Color(0xFF9BD8FF),fontSize=11.sp)
-                Text(result,color=Color.White,fontSize=30.sp,fontWeight=FontWeight.Bold,modifier=Modifier.padding(top=8.dp))
-            }
-        }
-        Text(if(fa) "نکته: ورودی‌ها را با اعداد انگلیسی وارد کن." else "Tip: Enter numbers using digits 0–9.",color=muted,fontSize=12.sp)
-    }
+    ScientificCalculatorPage(fa, fg, muted, surface)
 }
 
 @Composable
