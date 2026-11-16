@@ -347,13 +347,15 @@ private val lessons = listOf(
 fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
     var selected by remember { mutableStateOf<Lesson?>(null) }
     var section by remember { mutableStateOf(0) }
+    var courseSearch by remember { mutableStateOf("") }
     CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
         if(selected==null) {
             Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
                 Text(if(fa) "دروس مهندسی مکانیک" else "Mechanical Engineering Courses",color=fg,fontSize=23.sp,fontWeight=FontWeight.Bold)
                 Text(if(fa) "درس را انتخاب کن و مفاهیم، فرمول‌ها و تمرین‌ها را مرور کن." else "Choose a course to study concepts, formulas and practice.",color=muted,fontSize=12.sp)
+                OutlinedTextField(value=courseSearch,onValueChange={courseSearch=it},modifier=Modifier.fillMaxWidth(),singleLine=true,placeholder={Text(if(fa)"جست‌وجوی درس..." else "Search courses...")},leadingIcon={Icon(Icons.Default.Search,null)})
                 LazyColumn(verticalArrangement=Arrangement.spacedBy(9.dp),contentPadding=PaddingValues(bottom=16.dp)) {
-                    items(lessons) { lesson ->
+                    items(lessons.filter { it.fa.contains(courseSearch,true) || it.en.contains(courseSearch,true) || it.descFa.contains(courseSearch,true) || it.descEn.contains(courseSearch,true) }) { lesson ->
                         Surface(color=surface,shape=RoundedCornerShape(16.dp),modifier=Modifier.fillMaxWidth().clickable{selected=lesson;section=0}) {
                             Row(Modifier.padding(15.dp),verticalAlignment=Alignment.CenterVertically) {
                                 Surface(color=Color(0xFF173E5D),shape=RoundedCornerShape(12.dp)) { Icon(Icons.Default.MenuBook,null,tint=Color(0xFF59C2FF),modifier=Modifier.padding(11.dp).size(23.dp)) }
@@ -387,9 +389,11 @@ fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                     }
                 }
                 if(section==0) {
+                    var formulaSearch by remember(lesson.id) { mutableStateOf("") }
                     LazyColumn(verticalArrangement=Arrangement.spacedBy(9.dp),contentPadding=PaddingValues(bottom=18.dp)) {
                         item { Text(if(fa) "فرمول‌های کلیدی" else "Key Formulas",color=fg,fontWeight=FontWeight.Bold,fontSize=16.sp) }
-                        items(lesson.formulas) { f ->
+                        item { OutlinedTextField(value=formulaSearch,onValueChange={formulaSearch=it},modifier=Modifier.fillMaxWidth(),singleLine=true,placeholder={Text(if(fa)"جست‌وجوی فرمول یا نماد..." else "Search formula or symbol...")},leadingIcon={Icon(Icons.Default.Search,null)}) }
+                        items(lesson.formulas.filter { it.titleFa.contains(formulaSearch,true) || it.titleEn.contains(formulaSearch,true) || it.equation.contains(formulaSearch,true) || it.noteFa.contains(formulaSearch,true) }) { f ->
                             Surface(color=surface,shape=RoundedCornerShape(14.dp),modifier=Modifier.fillMaxWidth()) {
                                 Column(Modifier.fillMaxWidth().padding(14.dp),verticalArrangement=Arrangement.spacedBy(6.dp)) {
                                     Text(if(fa) f.titleFa else f.titleEn,color=fg,fontWeight=FontWeight.Bold,fontSize=13.sp)
