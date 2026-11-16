@@ -79,7 +79,7 @@ fun MechOSApp() {
                     0 -> HomePage(fa, fg, muted, surface) { page=it }
                     1 -> CalculatorPage(fa, fg, muted, surface)
                     2 -> LessonsPage(fa, fg, muted, surface)
-                    3 -> FormulaPage(fa, fg, muted, surface)
+                    3 -> FormulaLibraryPage(fa, fg, muted, surface)
                     4 -> UnitConverterPage(fa, fg, muted, surface)
                     else -> SettingsPage(fa, dark, fg, muted, surface, {dark=it; preferences.edit().putBoolean("dark",it).apply()}, {english=it; preferences.edit().putBoolean("english",it).apply()})
                 }
