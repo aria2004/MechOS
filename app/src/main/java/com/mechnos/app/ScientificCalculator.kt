@@ -137,7 +137,7 @@ fun ScientificCalculatorPage(fa: Boolean, fg: Color, muted: Color, surface: Colo
                 Icon(Icons.Default.Memory, null, tint = muted, modifier = Modifier.size(16.dp))
                 Text("M: " + formatNumber(memory), color = muted, fontSize = 10.sp)
                 TextButton(onClick = { memory = 0.0 }) { Text("MC", fontSize = 10.sp) }
-                TextButton(onClick = { memory = answer }) { Text("M+", fontSize = 10.sp) }
+                TextButton(onClick = { memory += answer }) { Text("M+", fontSize = 10.sp) }
                 TextButton(onClick = { insert(formatNumber(memory)) }) { Text("MR", fontSize = 10.sp) }
             }
         }
@@ -178,6 +178,7 @@ fun ScientificCalculatorPage(fa: Boolean, fg: Color, muted: Color, surface: Colo
                                     "π", "e", "Ans" -> insert(key)
                                     "∛(" -> insert("cbrt(")
                                     "±" -> if (expression.isNotEmpty()) insert("×(-1)") else insert("-")
+                                    "%" -> if (expression.isNotEmpty()) insert("/100")
                                     else -> insert(key)
                                 }
                             },
