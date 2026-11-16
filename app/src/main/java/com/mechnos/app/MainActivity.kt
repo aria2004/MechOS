@@ -98,6 +98,8 @@ fun MechOSApp() {
                         14 -> StudyPlannerPage(fa, fg, muted, surface)
                         15 -> ToolsHubPage(fa, fg, muted, surface) { page=it }
                         16 -> MoreHubPage(fa, fg, muted, surface) { page=it }
+                        17 -> AboutMechOSPage(fa, fg, muted, surface)
+                        18 -> ThermodynamicsReferencePage(fa, fg, muted, surface)
                         else -> HomePage(fa, fg, muted, surface) { page=it }
                     }
                 }
@@ -120,7 +122,7 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
                     Text(if(fa) "جعبه‌ابزار مهندسی مکانیک" else "MECHANICAL ENGINEERING TOOLKIT", color=Color(0xFF9BD8FF), fontSize=10.sp, fontWeight=FontWeight.Bold)
                     Text(if(fa) "از فرمول تا پاسخ،\nمرحله‌به‌مرحله." else "From formula to answer,\nstep by step.", color=Color.White, fontSize=22.sp, fontWeight=FontWeight.Bold, modifier=Modifier.padding(top=9.dp))
-                    Text(if(fa) "نسخه ۱.۵ • ابزارهای هوشمند مهندسی" else "Version 1.5 • Engineering tools", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
+                    Text(if(fa) "نسخه ۱.۶ • مرجع و ابزارهای مهندسی" else "Version 1.6 • Engineering reference & tools", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
                 }
             }
         }

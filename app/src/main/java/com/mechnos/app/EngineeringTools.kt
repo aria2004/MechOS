@@ -72,7 +72,9 @@ fun MoreHubPage(fa:Boolean,fg:Color,muted:Color,surface:Color,go:(Int)->Unit) {
         Triple(Icons.Default.School,if(fa)"برنامه مطالعه و مرور" else "Study planner",14),
         Triple(Icons.Default.Quiz,if(fa)"آزمون و تمرین" else "Quiz & practice",6),
         Triple(Icons.Default.Settings,if(fa)"تنظیمات و ظاهر" else "Settings",5),
-        Triple(Icons.Default.Public,if(fa)"منابع آنلاین" else "Online resources",8)
+        Triple(Icons.Default.Public,if(fa)"منابع آنلاین" else "Online resources",8),
+        Triple(Icons.Default.Thermostat,if(fa)"نمودارها و جداول ترمودینامیک" else "Thermodynamics charts & tables",18),
+        Triple(Icons.Default.Info,if(fa)"درباره MechOS و بازخورد" else "About MechOS & feedback",17)
     )
     Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         Text(if(fa)"بیشتر" else "More",color=fg,fontSize=23.sp,fontWeight=FontWeight.Bold)
