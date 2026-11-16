@@ -10,8 +10,8 @@ android {
         applicationId = "com.mechnos.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.4"
+        versionCode = 6
+        versionName = "1.5"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -32,4 +32,5 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("net.objecthunter:exp4j:0.4.8")
+    implementation("com.google.mlkit:text-recognition:16.0.1")
 }

@@ -52,16 +52,15 @@ fun MechOSApp() {
     MaterialTheme(colorScheme = if (dark) darkColorScheme(primary=Blue, background=bg, surface=surface) else lightColorScheme(primary=Color(0xFF087FC2), background=bg, surface=surface)) {
         Scaffold(containerColor=bg, bottomBar={
             NavigationBar(containerColor=surface, tonalElevation=5.dp) {
-                NavigationBarItem(selected=page==0,onClick={page=0},icon={Icon(Icons.Default.Dashboard,null)},label={Text(if(fa) "خانه" else "Home", maxLines=1)},alwaysShowLabel=false)
-                NavigationBarItem(selected=page==1,onClick={page=1},icon={Icon(Icons.Default.Calculate,null)},label={Text(if(fa) "محاسبات" else "Calculator", maxLines=1)},alwaysShowLabel=false)
-                NavigationBarItem(selected=page==2,onClick={page=2},icon={Icon(Icons.Default.School,null)},label={Text(if(fa) "دروس" else "Courses", maxLines=1)},alwaysShowLabel=false)
-                NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas", maxLines=1)},alwaysShowLabel=false)
-                NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.SwapHoriz,null)},label={Text(if(fa) "تبدیل" else "Convert", maxLines=1)},alwaysShowLabel=false)
-                NavigationBarItem(selected=page==5,onClick={page=5},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings", maxLines=1)},alwaysShowLabel=false)
+                NavigationBarItem(selected=page==0,onClick={page=0},icon={Icon(Icons.Default.Home,null)},label={Text(if(fa)"خانه" else "Home")},alwaysShowLabel=true)
+                NavigationBarItem(selected=page==1,onClick={page=1},icon={Icon(Icons.Default.Calculate,null)},label={Text(if(fa)"محاسبه" else "Calc")},alwaysShowLabel=true)
+                NavigationBarItem(selected=page==2,onClick={page=2},icon={Icon(Icons.Default.School,null)},label={Text(if(fa)"دروس" else "Study")},alwaysShowLabel=true)
+                NavigationBarItem(selected=page==15,onClick={page=15},icon={Icon(Icons.Default.Build,null)},label={Text(if(fa)"ابزار" else "Tools")},alwaysShowLabel=true)
+                NavigationBarItem(selected=page==16,onClick={page=16},icon={Icon(Icons.Default.MoreHoriz,null)},label={Text(if(fa)"بیشتر" else "More")},alwaysShowLabel=true)
             }
         }) { padding ->
             CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
-            BoxWithConstraints(Modifier.fillMaxSize().background(bg).padding(padding)) {
+            BoxWithConstraints(Modifier.fillMaxSize().background(bg).padding(padding).imePadding()) {
                 val compact = maxWidth < 380.dp
                 val sidePadding = when { maxWidth < 360.dp -> 12.dp; maxWidth < 600.dp -> 18.dp; else -> 28.dp }
                 Column(Modifier.fillMaxSize().widthIn(max=920.dp).align(Alignment.TopCenter).padding(horizontal=sidePadding)) {
@@ -91,7 +90,15 @@ fun MechOSApp() {
                         6 -> QuizPage(fa, fg, muted, surface)
                         7 -> EngineeringWorkshopPage(fa, fg, muted, surface)
                         8 -> OnlineHubPage(fa, fg, muted, surface)
-                        else -> QuizPage(fa, fg, muted, surface)
+                        9 -> MaterialDatabasePage(fa, fg, muted, surface)
+                        10 -> GraphLabPage(fa, fg, muted, surface)
+                        11 -> FormulaScannerPage(fa, fg, muted, surface)
+                        12 -> DrawingViewerPage(fa, fg, muted, surface)
+                        13 -> MachiningPage(fa, fg, muted, surface)
+                        14 -> StudyPlannerPage(fa, fg, muted, surface)
+                        15 -> ToolsHubPage(fa, fg, muted, surface) { page=it }
+                        16 -> MoreHubPage(fa, fg, muted, surface) { page=it }
+                        else -> HomePage(fa, fg, muted, surface) { page=it }
                     }
                 }
             }
@@ -113,7 +120,7 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
                     Text(if(fa) "جعبه‌ابزار مهندسی مکانیک" else "MECHANICAL ENGINEERING TOOLKIT", color=Color(0xFF9BD8FF), fontSize=10.sp, fontWeight=FontWeight.Bold)
                     Text(if(fa) "از فرمول تا پاسخ،\nمرحله‌به‌مرحله." else "From formula to answer,\nstep by step.", color=Color.White, fontSize=22.sp, fontWeight=FontWeight.Bold, modifier=Modifier.padding(top=9.dp))
-                    Text(if(fa) "نسخه ۱.۴ • ابزارهای هوشمند مهندسی" else "Version 1.4 • Engineering tools", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
+                    Text(if(fa) "نسخه ۱.۵ • ابزارهای هوشمند مهندسی" else "Version 1.5 • Engineering tools", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
                 }
             }
         }
@@ -127,6 +134,10 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 ToolCard(Icons.Default.School, if(fa) "تمرین و آزمون" else "Practice & Quiz", if(fa) "مرور سؤال‌ها و سنجش میزان تسلط" else "Review questions and track confidence", surface, fg, muted) { go(6) }
                 ToolCard(Icons.Default.Build, if(fa) "کارگاه محاسبات مهندسی" else "Engineering Workshop", if(fa) "محاسبه تنش، تیر، انبساط و توان محور" else "Stress, beam, thermal expansion and shaft power", surface, fg, muted) { go(7) }
                 ToolCard(Icons.Default.Public, if(fa) "مرکز منابع آنلاین" else "Online Resource Hub", if(fa) "دسترسی به منابع علمی و داده‌های مهندسی" else "Engineering references and scientific data", surface, fg, muted) { go(8) }
+                ToolCard(Icons.Default.Inventory2, if(fa) "بانک خواص مواد" else "Material Properties", if(fa) "چگالی، مدول یانگ و استحکام مواد" else "Density, Young's modulus and strength", surface, fg, muted) { go(9) }
+                ToolCard(Icons.Default.ShowChart, if(fa) "آزمایشگاه نمودار" else "Graph Lab", if(fa) "رسم و بررسی تابع‌های مهندسی" else "Plot and inspect engineering functions", surface, fg, muted) { go(10) }
+                ToolCard(Icons.Default.PrecisionManufacturing, if(fa) "ماشین‌کاری" else "Machining", if(fa) "دور اسپیندل، پیشروی و توان" else "Spindle speed, feed and power", surface, fg, muted) { go(13) }
+                ToolCard(Icons.Default.Build, if(fa) "همه ابزارها" else "All Tools", if(fa) "دسترسی یکجا به ابزارهای مهندسی" else "Open the complete engineering toolbox", surface, fg, muted) { go(15) }
             }
         }
     }
@@ -183,7 +194,7 @@ fun FormulaCard(title:String,formula:String,desc:String,surface:Color,fg:Color,m
 
 @Composable
 fun SettingsPage(fa:Boolean,dark:Boolean,fg:Color,muted:Color,surface:Color,onDark:(Boolean)->Unit,onEnglish:(Boolean)->Unit) {
-    Column(verticalArrangement=Arrangement.spacedBy(15.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(15.dp)) {
         Text(if(fa) "تنظیمات" else "Settings",color=fg,fontSize=23.sp,fontWeight=FontWeight.Bold)
         Surface(color=surface,shape=RoundedCornerShape(16.dp)) {
             Column(Modifier.padding(16.dp)) {
@@ -203,6 +214,6 @@ fun SettingsPage(fa:Boolean,dark:Boolean,fg:Color,muted:Color,surface:Color,onDa
                 }
             }
         }
-        Text("MechOS 1.4 • Mechanical Engineering Toolbox",color=muted,fontSize=11.sp)
+        Text("MechOS 1.5 • Mechanical Engineering Toolbox",color=muted,fontSize=11.sp)
     }
 }
