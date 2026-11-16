@@ -84,6 +84,7 @@ fun MechOSApp() {
                     5 -> SettingsPage(fa, dark, fg, muted, surface, {dark=it; preferences.edit().putBoolean("dark",it).apply()}, {english=it; preferences.edit().putBoolean("english",it).apply()})
                     6 -> QuizPage(fa, fg, muted, surface)
                     7 -> BookLibraryPage(fa, fg, muted, surface)
+                    8 -> OnlineHubPage(fa, fg, muted, surface)
                     else -> QuizPage(fa, fg, muted, surface)
                 }
             }
@@ -104,7 +105,7 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
                     Text(if(fa) "جعبه‌ابزار مهندسی مکانیک" else "MECHANICAL ENGINEERING TOOLKIT", color=Color(0xFF9BD8FF), fontSize=10.sp, fontWeight=FontWeight.Bold)
                     Text(if(fa) "از فرمول تا پاسخ،\nمرحله‌به‌مرحله." else "From formula to answer,\nstep by step.", color=Color.White, fontSize=22.sp, fontWeight=FontWeight.Bold, modifier=Modifier.padding(top=9.dp))
-                    Text(if(fa) "نسخه ۱.۱ • قابل استفاده آفلاین" else "Version 1.1 • Works offline", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
+                    Text(if(fa) "نسخه ۱.۳ • ابزارهای آفلاین و آنلاین" else "Version 1.3 • Offline & online tools", color=Color(0xFFB8D2E8), fontSize=11.sp, modifier=Modifier.padding(top=12.dp))
                 }
             }
         }
@@ -116,7 +117,8 @@ fun HomePage(fa:Boolean, fg:Color, muted:Color, surface:Color, go:(Int)->Unit) {
                 ToolCard(Icons.Default.Functions, if(fa) "بانک فرمول‌ها" else "Formula Library", if(fa) "روابط کلیدی مهندسی" else "Essential engineering equations", surface, fg, muted) { go(3) }
                 ToolCard(Icons.Default.SwapHoriz, if(fa) "تبدیل واحدها" else "Unit Converter", if(fa) "طول، فشار، نیرو، انرژی و دما" else "Length, pressure, force, energy & temperature", surface, fg, muted) { go(4) }
                 ToolCard(Icons.Default.School, if(fa) "تمرین و آزمون" else "Practice & Quiz", if(fa) "مرور سؤال‌ها و سنجش میزان تسلط" else "Review questions and track confidence", surface, fg, muted) { go(6) }
-                ToolCard(Icons.Default.MenuBook, if(fa) "کتابخانه آفلاین" else "Offline Library", if(fa) "کتاب مرجع دانشگاهی بدون نیاز به اینترنت" else "University reference textbook, no internet required", surface, fg, muted) { go(7) }
+                ToolCard(Icons.Default.MenuBook, if(fa) "کتابخانه آفلاین" else "Offline Library", if(fa) "سه جلد کتاب مرجع دانشگاهی" else "Three university reference volumes", surface, fg, muted) { go(7) }
+                ToolCard(Icons.Default.Public, if(fa) "مرکز منابع آنلاین" else "Online Resource Hub", if(fa) "دسترسی به منابع علمی و داده‌های مهندسی" else "Engineering references and scientific data", surface, fg, muted) { go(8) }
             }
         }
     }
@@ -193,6 +195,6 @@ fun SettingsPage(fa:Boolean,dark:Boolean,fg:Color,muted:Color,surface:Color,onDa
                 }
             }
         }
-        Text("MechOS 1.1 • Mechanical Engineering Toolbox",color=muted,fontSize=11.sp)
+        Text("MechOS 1.3 • Mechanical Engineering Toolbox",color=muted,fontSize=11.sp)
     }
 }
