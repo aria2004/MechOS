@@ -138,15 +138,62 @@ private fun ThermoGuideCard(title:String,body:String,surface:Color,fg:Color,mute
 
 @Composable
 private fun ThermoSchematic(kind:String) {
-    Canvas(Modifier.fillMaxWidth().height(165.dp)) {
-        val l=42f;val r=size.width-12f;val top=10f;val b=size.height-26f
-        val axis=Color(0xFF8FA8BD);val curve=Color(0xFF35B6FF)
-        drawLine(axis,Offset(l,b),Offset(r,b),2f);drawLine(axis,Offset(l,b),Offset(l,top),2f)
-        val dome=Path().apply{moveTo(l+(r-l)*.22f,b-(b-top)*.04f);cubicTo(l+(r-l)*.25f,b-(b-top)*.55f,l+(r-l)*.39f,b-(b-top)*.93f,l+(r-l)*.5f,b-(b-top)*.95f);cubicTo(l+(r-l)*.64f,b-(b-top)*.93f,l+(r-l)*.78f,b-(b-top)*.55f,l+(r-l)*.8f,b-(b-top)*.04f)}
-        drawPath(dome,curve,style=Stroke(3f))
-        val process=Path().apply{moveTo(l+(r-l)*.12f,b-(b-top)*.2f);cubicTo(l+(r-l)*.35f,b-(b-top)*.3f,l+(r-l)*.57f,b-(b-top)*.42f,l+(r-l)*.9f,b-(b-top)*.7f)}
-        drawPath(process,Color(0xFFFFB86B),style=Stroke(2.5f))
+    Canvas(Modifier.fillMaxWidth().height(190.dp)) {
+        val l=43f; val r=size.width-14f; val top=12f; val b=size.height-30f
+        val w=r-l; val h=b-top
+        val axis=Color(0xFF8FA8BD); val domeColor=Color(0xFF35B6FF)
+        drawLine(axis,Offset(l,b),Offset(r,b),2f)
+        drawLine(axis,Offset(l,b),Offset(l,top),2f)
+        if(kind=="P-T") {
+            val triple=Offset(l+w*.43f,b-h*.34f)
+            val critical=Offset(l+w*.88f,top+h*.30f)
+            val sublimation=Path().apply { moveTo(l,b); cubicTo(l+w*.12f,b-h*.04f,l+w*.29f,b-h*.18f,triple.x,triple.y) }
+            val vaporization=Path().apply { moveTo(triple.x,triple.y); cubicTo(l+w*.58f,b-h*.55f,l+w*.78f,top+h*.48f,critical.x,critical.y) }
+            val fusion=Path().apply { moveTo(triple.x,triple.y); cubicTo(l+w*.36f,b-h*.56f,l+w*.38f,top+h*.18f,l+w*.37f,top) }
+            drawPath(sublimation,Color(0xFFB66A58),style=Stroke(3f))
+            drawPath(vaporization,Color(0xFF35B6FF),style=Stroke(3f))
+            drawPath(fusion,Color(0xFF45A85A),style=Stroke(3f))
+            drawLine(axis,Offset(triple.x,triple.y),Offset(triple.x,b),1f)
+            drawLine(axis,Offset(l,triple.y),Offset(triple.x,triple.y),1f)
+            drawCircle(Color(0xFFE85D5D),5f,triple)
+            drawCircle(Color(0xFFE85D5D),5f,critical)
+        } else {
+            val dome=Path().apply {
+                moveTo(l+w*.22f,b)
+                cubicTo(l+w*.24f,b-h*.48f,l+w*.36f,top+h*.05f,l+w*.51f,top+h*.05f)
+                cubicTo(l+w*.67f,top+h*.05f,l+w*.78f,b-h*.48f,l+w*.80f,b)
+                close()
+            }
+            drawPath(dome,Color(0xFF35B6FF).copy(alpha=.12f))
+            val boundary=Path().apply {
+                moveTo(l+w*.22f,b)
+                cubicTo(l+w*.24f,b-h*.48f,l+w*.36f,top+h*.05f,l+w*.51f,top+h*.05f)
+                cubicTo(l+w*.67f,top+h*.05f,l+w*.78f,b-h*.48f,l+w*.80f,b)
+            }
+            drawPath(boundary,domeColor,style=Stroke(3f))
+            drawCircle(Color(0xFFE85D5D),5f,Offset(l+w*.51f,top+h*.05f))
+            if(kind=="P-v") {
+                for(f in listOf(.34f,.53f,.72f)) {
+                    val y=b-h*f
+                    drawLine(Color(0xFFB66A58),Offset(l+w*.28f,y),Offset(l+w*.74f,y),2f)
+                }
+                for(f in listOf(.23f,.48f,.72f)) {
+                    val p=Path().apply { moveTo(l+w*.30f,b-h*f); cubicTo(l+w*.42f,b-h*(f+.08f),l+w*.60f,b-h*(f+.18f),l+w*.91f,b-h*(f+.34f)) }
+                    drawPath(p,Color(0xFFB66A58),style=Stroke(2f))
+                }
+            } else if(kind=="T-v") {
+                for(f in listOf(.28f,.48f,.68f)) {
+                    val p=Path().apply { moveTo(l+w*.10f,b-h*f); cubicTo(l+w*.35f,b-h*(f+.05f),l+w*.64f,b-h*(f+.10f),l+w*.93f,b-h*(f+.22f)) }
+                    drawPath(p,Color(0xFFB66A58),style=Stroke(2f))
+                }
+            } else {
+                val process=Path().apply { moveTo(l+w*.12f,b-h*.18f); cubicTo(l+w*.35f,b-h*.32f,l+w*.58f,b-h*.45f,l+w*.91f,b-h*.72f) }
+                drawPath(process,Color(0xFFFFB86B),style=Stroke(2.5f))
+            }
+        }
     }
-    Text(if(kind=="P-v")"P" else if(kind=="T-v")"T" else if(kind=="T-s")"T" else "P",color=Color(0xFF35B6FF),fontSize=10.sp)
-    Text(if(kind=="P-v")"v" else if(kind=="T-v")"v" else if(kind=="T-s")"s" else "h",color=Color(0xFF35B6FF),fontSize=10.sp)
+    Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween) {
+        Text(if(kind=="P-v"||kind=="T-v")"P / T" else "P",color=Color(0xFF35B6FF),fontSize=10.sp)
+        Text(if(kind=="P-T")"T" else if(kind=="T-s")"s" else if(kind=="P-h")"h" else "v",color=Color(0xFF35B6FF),fontSize=10.sp)
+    }
 }
