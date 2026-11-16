@@ -435,3 +435,45 @@ fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
         }
     }
 }
+
+
+@Composable
+fun FormulaLibraryPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
+    var search by remember { mutableStateOf("") }
+    var selectedCourse by remember { mutableStateOf("all") }
+    val allFormulas = lessons.flatMap { lesson -> lesson.formulas.map { lesson to it } }
+    val filtered = allFormulas.filter { (lesson, item) ->
+        (selectedCourse=="all" || lesson.id==selectedCourse) &&
+        (search.isBlank() || item.titleFa.contains(search,true) || item.titleEn.contains(search,true) ||
+            item.equation.contains(search,true) || item.noteFa.contains(search,true) ||
+            item.noteEn.contains(search,true) || lesson.fa.contains(search,true) || lesson.en.contains(search,true))
+    }
+    CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
+        Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.spacedBy(10.dp)) {
+            Text(if(fa)"کتابخانه فرمول‌های مهندسی" else "Engineering Formula Library",color=fg,fontSize=22.sp,fontWeight=FontWeight.Bold)
+            Text(if(fa)"جست‌وجو در کل درس‌ها؛ فرمول‌ها همراه با توضیح و نام درس" else "Search across all courses, with explanations and course labels",color=muted,fontSize=11.sp)
+            OutlinedTextField(value=search,onValueChange={search=it},modifier=Modifier.fillMaxWidth(),singleLine=true,placeholder={Text(if(fa)"نام فرمول، نماد یا درس..." else "Formula, symbol or course...")},leadingIcon={Icon(Icons.Default.Search,null)})
+            Row(Modifier.fillMaxWidth().horizontalScroll(androidx.compose.foundation.rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)) {
+                FilterChip(selected=selectedCourse=="all",onClick={selectedCourse="all"},label={Text(if(fa)"همه درس‌ها" else "All courses")})
+                lessons.forEach { lesson ->
+                    FilterChip(selected=selectedCourse==lesson.id,onClick={selectedCourse=lesson.id},label={Text(if(fa)lesson.fa else lesson.en)})
+                }
+            }
+            Text(if(fa)"${filtered.size} فرمول" else "${filtered.size} formulas",color=muted,fontSize=10.sp)
+            LazyColumn(verticalArrangement=Arrangement.spacedBy(8.dp),contentPadding=PaddingValues(bottom=18.dp)) {
+                items(filtered) { (lesson,item) ->
+                    Surface(color=surface,shape=RoundedCornerShape(14.dp)) {
+                        Column(Modifier.fillMaxWidth().padding(13.dp),verticalArrangement=Arrangement.spacedBy(5.dp)) {
+                            Text(if(fa)item.titleFa else item.titleEn,color=fg,fontWeight=FontWeight.Bold,fontSize=13.sp)
+                            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                                Text(item.equation,color=Color(0xFF35B6FF),fontSize=18.sp,fontWeight=FontWeight.Bold)
+                            }
+                            Text(if(fa)item.noteFa else item.noteEn,color=muted,fontSize=11.sp)
+                            Text(if(fa)lesson.fa else lesson.en,color=Color(0xFF35AEEF),fontSize=10.sp,fontWeight=FontWeight.SemiBold)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
