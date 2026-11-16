@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private data class LessonFormula(val titleFa:String,val titleEn:String,val equation:String,val noteFa:String,val noteEn:String)
-private data class LessonQuestion(val qFa:String,val qEn:String,val aFa:String,val aEn:String)
-private data class Lesson(val id:String,val fa:String,val en:String,val descFa:String,val descEn:String,val formulas:List<LessonFormula>,val concepts:List<Pair<String,String>>,val questions:List<LessonQuestion>)
+internal data class LessonFormula(val titleFa:String,val titleEn:String,val equation:String,val noteFa:String,val noteEn:String)
+internal data class LessonQuestion(val qFa:String,val qEn:String,val aFa:String,val aEn:String)
+internal data class Lesson(val id:String,val fa:String,val en:String,val descFa:String,val descEn:String,val formulas:List<LessonFormula>,val concepts:List<Pair<String,String>>,val questions:List<LessonQuestion>)
 
 private fun q(f:String,e:String,af:String,ae:String)=LessonQuestion(f,e,af,ae)
 private fun formula(t:String,e:String,n:String,ne:String)=LessonFormula(t,when(t) { "قانون تعادل نیروها"->"Force equilibrium"; "تعادل گشتاورها"->"Moment equilibrium"; "گشتاور نیرو"->"Moment of a force"; "اصطکاک حدی"->"Limiting friction"; "تنش نرمال"->"Normal stress"; "کرنش محوری"->"Axial strain"; "قانون هوک"->"Hooke’s law"; "تنش برشی متوسط"->"Average shear stress"; "خمش تیر"->"Beam bending"; "قانون اول سیستم بسته"->"First law for a closed system"; "گاز ایده‌آل"->"Ideal gas"; "کار مرزی"->"Boundary work"; "آنتالپی"->"Enthalpy"; "کیفیت بخار"->"Vapor quality"; "سرعت متوسط"->"Average velocity"; "شتاب"->"Acceleration"; "حرکت با شتاب ثابت"->"Constant-acceleration motion"; "قانون دوم نیوتن"->"Newton’s second law"; "انرژی جنبشی"->"Kinetic energy"; "فشار"->"Pressure"; "فشار هیدرواستاتیک"->"Hydrostatic pressure"; "معادله پیوستگی"->"Continuity equation"; "برنولی"->"Bernoulli equation"; "نیروی شناوری"->"Buoyant force"; "قانون فوریه"->"Fourier’s law"; "جابه‌جایی نیوتن"->"Newton’s law of cooling"; "قانون استفان-بولتزمن"->"Stefan–Boltzmann law"; "مقاومت رسانش دیواره"->"Wall conduction resistance"; "نسبت سرعت زاویه‌ای"->"Angular speed ratio"; "سرعت نقطه روی جسم صلب"->"Rigid-body point velocity"; "شتاب مماسی"->"Tangential acceleration"; "شتاب نرمال"->"Normal acceleration"; "تنش پیچشی محور"->"Shaft torsional stress"; "توان دورانی"->"Rotational power"; "تنش برشی پیچ"->"Bolt shear stress"; "ضریب اطمینان"->"Factor of safety"; "فرکانس طبیعی جرم-فنر"->"Mass-spring natural frequency"; "فرکانس"->"Frequency"; "نسبت میرایی"->"Damping ratio"; "میرایی بحرانی"->"Critical damping"; "مشتق توان"->"Power rule"; "انتگرال توان"->"Power integral"; "تبدیل لاپلاس"->"Laplace transform"; else->t },e,n,ne)
@@ -192,7 +192,7 @@ extraFormula("سری تیلور","Taylor series","f(x)=Σ f⁽ⁿ⁾(a)(x−a)�
 else -> emptyList()
 }
 
-private val lessons = listOf(
+internal val lessons = listOf(
  Lesson("statics","استاتیک","Statics","تعادل نیروها و گشتاورها","Force and moment equilibrium",
  listOf(formula("قانون تعادل نیروها","ΣF = 0","برآیند نیروها در حالت تعادل صفر است.","The resultant force is zero in equilibrium."),formula("تعادل گشتاورها","ΣM = 0","مجموع گشتاورها حول هر نقطه صفر است.","The sum of moments about any point is zero."),formula("گشتاور نیرو","M = F d⊥","فاصله عمودی خط اثر نیرو تا نقطه.","Perpendicular distance to the line of action."),formula("اصطکاک حدی","Fₛ,max = μₛ N","حداکثر اصطکاک ایستایی برابر ضریب اصطکاک در نیروی عمودی است.","Maximum static friction.")),
  listOf("جسم صلب در تعادل است اگر برآیند نیروها و گشتاورها صفر باشد." to "A rigid body is in equilibrium when net force and moment are zero.","نمودار جسم آزاد تمام نیروها و گشتاورهای خارجی را نشان می‌دهد." to "A free-body diagram shows all external forces and moments.","واکنش تکیه‌گاه به نوع قید و درجات آزادی محدودشده بستگی دارد." to "Support reactions depend on the constraints."),
