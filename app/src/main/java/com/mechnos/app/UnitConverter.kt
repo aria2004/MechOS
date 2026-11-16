@@ -3,6 +3,7 @@ package com.mechnos.app
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -143,7 +144,7 @@ fun UnitConverterPage(fa: Boolean, fg: Color, muted: Color, surface: Color) {
     val value = input.replace(',', '.').toDoubleOrNull()
     val converted = value?.let { fromBase(toBase(it, category, fromIndex), category, toIndex) }
 
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(if (fa) "تبدیل واحد مهندسی" else "Engineering Unit Converter",
             color = fg, fontSize = 23.sp, fontWeight = FontWeight.Bold)
         Text(if (fa) "بیش از ۱۵ گروه کمیت؛ متریک، امپریال و آمریکایی"

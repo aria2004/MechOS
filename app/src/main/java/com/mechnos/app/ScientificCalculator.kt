@@ -3,6 +3,8 @@ package com.mechnos.app
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -106,7 +108,7 @@ fun ScientificCalculatorPage(fa: Boolean, fg: Color, muted: Color, surface: Colo
         listOf("±", "0", ".", "Ans", "=")
     )
 
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
                 Text(if (fa) "ماشین‌حساب علمی" else "Scientific Calculator", color = fg, fontSize = 22.sp, fontWeight = FontWeight.Bold)

@@ -6,7 +6,6 @@ on:
 concurrency:
   group: mechos-apk-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,25 +18,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - name: Download three licensed OpenStax physics volumes
-        run: |
-          mkdir -p app/src/main/assets
-          curl -fL --retry 3 --retry-delay 2 https://openlibrary-repo.ecampusontario.ca/jspui/bitstream/123456789/432/1/university-physics-volume-1-5.2.pdf -o app/src/main/assets/UniversityPhysicsVolume1.pdf
-          curl -fL --retry 3 --retry-delay 2 https://openlibrary-repo.ecampusontario.ca/jspui/bitstream/123456789/442/1/university-physics-volume-2-3.1.pdf -o app/src/main/assets/UniversityPhysicsVolume2.pdf
-          curl -fL --retry 3 --retry-delay 2 https://openlibrary-repo.ecampusontario.ca/jspui/bitstream/123456789/443/1/university-physics-volume-3-3.29.pdf -o app/src/main/assets/UniversityPhysicsVolume3.pdf
-          test $(stat -c%s app/src/main/assets/UniversityPhysicsVolume1.pdf) -gt 50000000
-          test $(stat -c%s app/src/main/assets/UniversityPhysicsVolume2.pdf) -gt 70000000
-          test $(stat -c%s app/src/main/assets/UniversityPhysicsVolume3.pdf) -gt 50000000
-          TOTAL=$(du -cb app/src/main/assets/*.pdf | tail -1 | cut -f1)
-          echo "Bundled textbook bytes: $TOTAL"
-          test "$TOTAL" -gt 185000000
       - name: Build debug APK
         run: |
           gradle assembleDebug
           APK=app/build/outputs/apk/debug/app-debug.apk
-          APK_SIZE=$(stat -c%s "$APK")
-          echo "APK bytes: $APK_SIZE"
-          test "$APK_SIZE" -gt 200000000
+          test -s "$APK"
+          echo "APK bytes: $(stat -c%s "$APK")"
       - uses: actions/upload-artifact@v4
         with:
           name: MechOS-debug-apk
