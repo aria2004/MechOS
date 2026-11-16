@@ -79,6 +79,20 @@ extraFormula("بازده ایزنتروپیک کمپرسور","Compressor isentr
 extraFormula("چرخه اتو","Otto-cycle efficiency","η_Otto = 1 − 1/r^(k−1)","مدل هوای استاندارد با گرمای ویژه ثابت؛ r نسبت تراکم است.","Air-standard model with constant specific heats; r is compression ratio."),
 extraFormula("چرخه برایتون","Brayton-cycle efficiency","η_Brayton = 1 − 1/r_p^((k−1)/k)","مدل ایده‌آل با cp ثابت؛ r_p نسبت فشار کمپرسور است.","Ideal model with constant cp; r_p is compressor pressure ratio.")
 )
+"dynamics" -> listOf(
+extraFormula("سرعت در شتاب ثابت","Velocity with constant acceleration","v = v₀ + at","برای حرکت خطی با شتاب ثابت.","For rectilinear motion with constant acceleration."),
+extraFormula("مکان در شتاب ثابت","Position with constant acceleration","x = x₀ + v₀t + ½at²","برای شتاب ثابت.","For constant acceleration."),
+extraFormula("رابطه مستقل از زمان","Time-independent kinematics","v² = v₀² + 2a(x−x₀)","برای شتاب ثابت و حرکت خطی.","For constant-acceleration rectilinear motion."),
+extraFormula("شتاب مماسی و نرمال","Tangential and normal acceleration","a = √(a_t²+a_n²) ; a_n = v²/ρ","ρ شعاع انحنای مسیر است.","ρ is the radius of curvature."),
+extraFormula("مختصات قطبی؛ سرعت","Polar-coordinate velocity","v = ṙ e_r + r θ̇ e_θ","برای حرکت صفحه‌ای در مختصات قطبی.","For planar motion in polar coordinates."),
+extraFormula("مختصات قطبی؛ شتاب","Polar-coordinate acceleration","a = (r̈−rθ̇²)e_r + (rθ̈+2ṙθ̇)e_θ","مولفه‌های شعاعی و عرضی.","Radial and transverse components."),
+extraFormula("کار و انرژی جنبشی","Work-kinetic energy","U₁→₂ = T₂−T₁","کار خالص نیروها برابر تغییر انرژی جنبشی است.","Net work equals the change in kinetic energy."),
+extraFormula("توان لحظه‌ای","Instantaneous power","P = F·v = Mω","حاصل‌ضرب اسکالر نیرو و سرعت یا گشتاور و سرعت زاویه‌ای.","Dot product of force and velocity, or torque and angular speed."),
+extraFormula("ضربه و تکانه","Impulse-momentum","∫F dt = m v₂ − m v₁","برای جرم ثابت؛ فرم برداری.","For constant mass; vector form."),
+extraFormula("تکانه زاویه‌ای جسم صلب","Rigid-body angular momentum","H_G = I_G ω","برای دوران صفحه‌ای حول مرکز جرم.","For planar rotation about the mass center."),
+extraFormula("معادله دوران حول مرکز جرم","Rotation about mass center","ΣM_G = I_G α","برای جسم صلب در حرکت صفحه‌ای.","For a rigid body in planar motion."),
+extraFormula("انرژی جنبشی جسم صلب","Rigid-body kinetic energy","T = ½m v_G² + ½I_Gω²","جمع انرژی انتقالی مرکز جرم و دورانی حول مرکز جرم.","Translation of mass center plus rotation about the mass center.")
+)
 "fluids" -> listOf(
 extraFormula("دبی جرمی","Mass flow rate","ṁ = ρAV","چگالی ضربدر سرعت متوسط و سطح مقطع.","Density times average speed and area."),
 extraFormula("عدد رینولدز","Reynolds number","Re = ρVD/μ = VD/ν","برای جریان داخلی در لوله، D قطر هیدرولیکی/لوله است.","For internal pipe flow, D is pipe or hydraulic diameter."),
@@ -379,7 +393,7 @@ fun LessonsPage(fa:Boolean,fg:Color,muted:Color,surface:Color) {
                             Surface(color=surface,shape=RoundedCornerShape(14.dp),modifier=Modifier.fillMaxWidth()) {
                                 Column(Modifier.fillMaxWidth().padding(14.dp),verticalArrangement=Arrangement.spacedBy(6.dp)) {
                                     Text(if(fa) f.titleFa else f.titleEn,color=fg,fontWeight=FontWeight.Bold,fontSize=13.sp)
-                                    Text(f.equation,color=Color(0xFF35B6FF),fontSize=19.sp,fontWeight=FontWeight.Bold,textAlign=if(fa) TextAlign.Start else TextAlign.Start)
+                                    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) { Text(f.equation,color=Color(0xFF35B6FF),fontSize=19.sp,fontWeight=FontWeight.Bold,textAlign=TextAlign.Start) }
                                     Text(if(fa) f.noteFa else f.noteEn,color=muted,fontSize=11.sp)
                                 }
                             }
