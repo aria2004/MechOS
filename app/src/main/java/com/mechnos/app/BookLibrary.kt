@@ -70,7 +70,7 @@ fun BookLibraryPage(fa: Boolean, fg: Color, muted: Color, surface: Color) {
                     Text(if (opening) (if (fa) "در حال باز کردن..." else "Opening...")
                         else (if (fa) "مطالعه کتاب آفلاین" else "Read offline textbook"))
                 }
-                Text("Authors: William Moebs, Samuel J. Ling, Jeff Sanny • OpenStax • CC BY 4.0 • Access for free at openstax.org",
+                Text("Authors: William Moebs, Samuel J. Ling, Jeff Sanny • OpenStax • CC BY-NC-SA 4.0 • Access for free at openstax.org",
                     color = muted, fontSize = 10.sp)
             }
         }
