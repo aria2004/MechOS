@@ -56,6 +56,7 @@ fun MechOSApp() {
                 NavigationBarItem(selected=page==3,onClick={page=3},icon={Icon(Icons.Default.MenuBook,null)},label={Text(if(fa) "فرمول‌ها" else "Formulas")})
                 NavigationBarItem(selected=page==4,onClick={page=4},icon={Icon(Icons.Default.SwapHoriz,null)},label={Text(if(fa) "تبدیل واحد" else "Convert")})
                 NavigationBarItem(selected=page==5,onClick={page=5},icon={Icon(Icons.Default.Settings,null)},label={Text(if(fa) "تنظیمات" else "Settings")})
+                NavigationBarItem(selected=page==6,onClick={page=6},icon={Icon(Icons.Default.Quiz,null)},label={Text(if(fa) "آزمون" else "Practice")})
             }
         }) { padding ->
             CompositionLocalProvider(LocalLayoutDirection provides if(fa) LayoutDirection.Rtl else LayoutDirection.Ltr) {
@@ -81,7 +82,8 @@ fun MechOSApp() {
                     2 -> LessonsPage(fa, fg, muted, surface)
                     3 -> FormulaLibraryPage(fa, fg, muted, surface)
                     4 -> UnitConverterPage(fa, fg, muted, surface)
-                    else -> SettingsPage(fa, dark, fg, muted, surface, {dark=it; preferences.edit().putBoolean("dark",it).apply()}, {english=it; preferences.edit().putBoolean("english",it).apply()})
+                    5 -> SettingsPage(fa, dark, fg, muted, surface, {dark=it; preferences.edit().putBoolean("dark",it).apply()}, {english=it; preferences.edit().putBoolean("english",it).apply()})
+                    else -> QuizPage(fa, fg, muted, surface)
                 }
             }
             }
