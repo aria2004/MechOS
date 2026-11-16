@@ -40,7 +40,7 @@ fun EngineeringWorkshopPage(fa:Boolean, fg:Color, muted:Color, surface:Color) {
     val w=d.replace(',','.').toDoubleOrNull() ?: 0.0
     val result = when(selected) {
         0 -> if(y>0) x/y else Double.NaN
-        1 -> if(w>0) x*z/w else Double.NaN
+        1 -> if(y>0) x*z/y else Double.NaN
         2 -> x*1e-6*y*z
         else -> x*2*PI*y/60.0
     }
@@ -77,10 +77,9 @@ fun EngineeringWorkshopPage(fa:Boolean, fg:Color, muted:Color, surface:Color) {
                         @Composable fun field(label:String,value:String,onChange:(String)->Unit) {
                             OutlinedTextField(value=value,onValueChange=onChange,label={Text(label)},modifier=Modifier.fillMaxWidth(),singleLine=true,keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Decimal))
                         }
-                        field(if(fa)labels[selectedField(0,selected)] else labelsEn[selectedField(0,selected)],a){a=it}
-                        field(if(fa)labels[selectedField(1,selected)] else labelsEn[selectedField(1,selected)],b){b=it}
+                        field(if(fa)labels[0] else labelsEn[0],a){a=it}
+                        field(if(fa)labels[1] else labelsEn[1],b){b=it}
                         if(selected==1 || selected==2) field(if(fa)labels[2] else labelsEn[2],c){c=it}
-                        if(selected==1) field(if(fa)labels[3] else labelsEn[3],d){d=it}
                         HorizontalDivider()
                         Text(if(fa)"نتیجه" else "RESULT",color=muted,fontSize=11.sp,fontWeight=FontWeight.Bold)
                         Text(if(result.isFinite()) String.format(Locale.US,"%.5g %s",result,unit) else if(fa)"ورودی‌ها را بررسی کن" else "Check input values",color=if(result.isFinite()) Color(0xFF36C98F) else Color(0xFFFF8A80),fontSize=24.sp,fontWeight=FontWeight.Black)
@@ -96,4 +95,4 @@ fun EngineeringWorkshopPage(fa:Boolean, fg:Color, muted:Color, surface:Color) {
         }
     }
 }
-private fun selectedField(index:Int, selected:Int)=index
+
